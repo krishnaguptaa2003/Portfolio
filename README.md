@@ -1,4 +1,4 @@
-🌐 Krishna Gupta's Developer Portfolio
+# 🌐 Krishna Gupta's Developer Portfolio
 Welcome to my personal portfolio! Built with React.js and Tailwind CSS, this website highlights my technical skills, projects, internships, and UI/UX design capabilities — all wrapped in a sleek, responsive, and modern interface.
 
 🔥 Features
@@ -50,19 +50,11 @@ Stores messages in MongoDB Atlas
 
 Requires .env config:
 
-env
-Copy
-Edit
+```env
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
 MONGO_URI=your_mongo_connection_string
-🌍 Live Demo
-👉 Coming Soon: https://krishna-portfolio.netlify.app
 
-📁 Folder Structure (Simplified)
-pgsql
-Copy
-Edit
 src/
 │
 ├── components/
@@ -76,23 +68,11 @@ src/
 │   └── images/
 │       └── Aboutimg.png, cert1.png, etc.
 
-├── App.js
-├── index.js
-└── index.css
-📦 Getting Started
-To run locally:
-
-bash
-Copy
-Edit
 npm install
 npm start
-To run with Netlify functions (for email + MongoDB support):
 
-bash
-Copy
-Edit
 netlify dev
+
 👨‍💻 About Me
 “I love turning complex problems into elegant, functional designs.”
 
