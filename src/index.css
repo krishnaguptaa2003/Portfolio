@@ -1,0 +1,63 @@
+/* src/index.css */
+
+/* UNIVERSAL RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BASE HTML + BODY */
+html,
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  scroll-behavior: smooth;
+  font-family: 'Inter', sans-serif;
+}
+
+/* GLOBAL CONTAINER CLASS */
+.container {
+  max-width: 1280px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* BUTTON STYLES */
+.btn-primary {
+  background-color: #ff6f00;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #e85e00;
+}
+
+/* HEADING UTILITIES */
+.section-title {
+  @apply text-4xl md:text-5xl font-bold text-center mb-14 tracking-wide text-gray-900;
+}
+
+/* ANIMATIONS */
+.fade-in {
+  animation: fadeIn 1s ease-in both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
