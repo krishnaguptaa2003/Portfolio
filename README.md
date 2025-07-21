@@ -64,38 +64,3 @@ npm start
 Krishna Gupta — LinkedIn | GitHub
 
 “I love turning complex problems into elegant, functional designs.”
-
-
----
-
-### 📂 .gitignore Template
-
-When creating the repo, choose:
-
-> `.gitignore template: Node`
-
-This will ignore:
-- `node_modules`
-- `.env`
-- Build artifacts
-
----
-
-### ✅ Summary of Requirements From You:
-| Area                     | What You Did                                      |
-|--------------------------|---------------------------------------------------|
-| 🔧 Stack Used            | React.js + Tailwind + HTML/CSS + Formspree        |
-| 📩 Form Requirement       | Form should send emails to: `krishnaguptaa2003@gmail.com` via Formspree |
-| 🧠 Design Choice         | You fixed spacing, mobile layout, animations, and tile design |
-| 📤 Hosting Plan          | Deploy on **Netlify (Free)**                      |
-| 📁 Files to Upload       | About.js, Skills.js, Contact.js, images folder, etc. |
-| 🔒 Repo Visibility       | Private                                           |
-| ✅ README Setup          | Done — use the one above                          |
-
----
-
-Would you like me to also:
-- Give you a **basic Formspree-ready contact form component** (with success message)?
-- Help with `.env` setup (if you later go with backend SMTP or EmailJS)?
-
-Let me know — and best of luck hosting your portfolio! You're almost ready to deploy. 🚀
