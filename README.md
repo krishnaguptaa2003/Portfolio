@@ -78,4 +78,3 @@ netlify dev
 
 🔗 LinkedIn
 🔗 GitHub
-📧 krishnagupta.design@gmail.com
