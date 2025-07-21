@@ -1,12 +1,81 @@
-# React + Vite
+# 🌐 Krishna Gupta's Developer Portfolio
+Welcome to my personal portfolio! Built with React.js and Tailwind CSS, this website highlights my technical skills, projects, internships, and UI/UX design capabilities — all wrapped in a sleek, responsive, and modern interface.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🔥 Features
+⚛️ React.js + Tailwind CSS powered
 
-Currently, two official plugins are available:
+📱 Fully mobile responsive design
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✨ Smooth animations and fade-in effects
 
-## Expanding the ESLint configuration
+📜 Live Resume Download
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+📬 Contact Form with:
+
+✅ Email support via Formspree (no backend required)
+
+✅ Optional support via Netlify Functions + MongoDB Atlas
+
+🧠 Tech Stack Overview and Skill Cards
+
+🎓 Internship Highlights: Welspun & Teque7
+
+💻 Project Highlights: EduTech Platform, Hospital Management System, UI/UX Prototypes
+
+🚀 Tech Stack
+Frontend: React.js, Tailwind CSS, JavaScript (ES6+)
+
+Design: Figma (Wireframing & UI Design)
+
+Backend Knowledge: MongoDB, .NET Core, Laravel (minor experience)
+
+Deployment: Netlify (Continuous GitHub Integration)
+
+📬 Contact Form
+Option 1: Formspree (Live)
+Integrated using Formspree.io
+
+Directly sends user messages to: krishnaguptaa2003@gmail.com
+
+Works without any backend setup
+
+Fully functional when hosted on Netlify
+
+Option 2: Netlify Functions + MongoDB (Advanced)
+Uses send-email.js (Netlify Function)
+
+Sends email using NodeMailer + Gmail App Password
+
+Stores messages in MongoDB Atlas
+
+Requires .env config:
+
+```env
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+MONGO_URI=your_mongo_connection_string
+
+src/
+│
+├── components/
+│   ├── Header.jsx
+│   ├── About.jsx
+│   ├── Skills.jsx
+│   ├── Certificates.jsx
+│   └── Contact.jsx
+│
+├── public/
+│   └── images/
+│       └── Aboutimg.png, cert1.png, etc.
+
+npm install
+npm start
+
+netlify dev
+
+👨‍💻 About Me
+“I love turning complex problems into elegant, functional designs.”
+
+🔗 LinkedIn
+🔗 GitHub
+📧 krishnagupta.design@gmail.com
