@@ -17323,25 +17323,26 @@ var require_document = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.OnDemandDocument = void 0;
     var bson_1 = require_bson2();
+    var BSONElementOffset = {
+      type: 0,
+      nameOffset: 1,
+      nameLength: 2,
+      offset: 3,
+      length: 4
+    };
     var OnDemandDocument = class _OnDemandDocument {
       constructor(bson, offset = 0, isArray = false, elements) {
+        this.cache = /* @__PURE__ */ Object.create(null);
+        this.indexFound = /* @__PURE__ */ Object.create(null);
         this.bson = bson;
         this.offset = offset;
         this.isArray = isArray;
-        this.cache = /* @__PURE__ */ Object.create(null);
-        this.indexFound = /* @__PURE__ */ Object.create(null);
         this.elements = elements ?? (0, bson_1.parseToElementsToArray)(this.bson, offset);
       }
       /** Only supports basic latin strings */
       isElementName(name, element) {
-        const nameLength = element[
-          2
-          /* BSONElementOffset.nameLength */
-        ];
-        const nameOffset = element[
-          1
-          /* BSONElementOffset.nameOffset */
-        ];
+        const nameLength = element[BSONElementOffset.nameLength];
+        const nameOffset = element[BSONElementOffset.nameOffset];
         if (name.length !== nameLength)
           return false;
         const nameEnd = nameOffset + nameLength;
@@ -17398,18 +17399,9 @@ var require_document = __commonJS({
         return null;
       }
       toJSValue(element, as) {
-        const type = element[
-          0
-          /* BSONElementOffset.type */
-        ];
-        const offset = element[
-          3
-          /* BSONElementOffset.offset */
-        ];
-        const length = element[
-          4
-          /* BSONElementOffset.length */
-        ];
+        const type = element[BSONElementOffset.type];
+        const offset = element[BSONElementOffset.offset];
+        const length = element[BSONElementOffset.length];
         if (as !== type) {
           return null;
         }
@@ -17544,26 +17536,21 @@ var require_responses = __commonJS({
     var error_1 = require_error();
     var utils_1 = require_utils();
     var document_1 = require_document();
+    var BSONElementOffset = {
+      type: 0,
+      nameOffset: 1,
+      nameLength: 2,
+      offset: 3,
+      length: 4
+    };
     function isErrorResponse(bson, elements) {
       for (let eIdx = 0; eIdx < elements.length; eIdx++) {
         const element = elements[eIdx];
-        if (element[
-          2
-          /* BSONElementOffset.nameLength */
-        ] === 2) {
-          const nameOffset = element[
-            1
-            /* BSONElementOffset.nameOffset */
-          ];
+        if (element[BSONElementOffset.nameLength] === 2) {
+          const nameOffset = element[BSONElementOffset.nameOffset];
           if (bson[nameOffset] === 111 && bson[nameOffset + 1] === 107) {
-            const valueOffset = element[
-              3
-              /* BSONElementOffset.offset */
-            ];
-            const valueLength = element[
-              4
-              /* BSONElementOffset.length */
-            ];
+            const valueOffset = element[BSONElementOffset.offset];
+            const valueLength = element[BSONElementOffset.length];
             for (let i = valueOffset; i < valueOffset + valueLength; i++) {
               if (bson[i] !== 0)
                 return false;
@@ -17883,10 +17870,8 @@ var require_write_concern = __commonJS({
           opts = options.writeConcern;
         }
         const parentOpts = inherit instanceof _WriteConcern ? inherit : inherit.writeConcern;
-        const { w = void 0, wtimeout = void 0, j = void 0, fsync = void 0, journal = void 0, wtimeoutMS = void 0 } = {
-          ...parentOpts,
-          ...opts
-        };
+        const mergedOpts = { ...parentOpts, ...opts };
+        const { w = void 0, wtimeout = void 0, j = void 0, fsync = void 0, journal = void 0, wtimeoutMS = void 0 } = mergedOpts;
         if (w != null || wtimeout != null || wtimeoutMS != null || j != null || journal != null || fsync != null) {
           return new _WriteConcern(w, wtimeout ?? wtimeoutMS, j ?? journal, fsync);
         }
@@ -18085,7 +18070,6 @@ var require_utils = __commonJS({
        */
       constructor(db, collection) {
         this.db = db;
-        this.collection = collection;
         this.collection = collection === "" ? void 0 : collection;
       }
       toString() {
@@ -23992,6 +23976,9 @@ var require_run_command_cursor = __commonJS({
       }
       /** @internal */
       async getMore(_batchSize) {
+        if (!this.session) {
+          throw new error_1.MongoRuntimeError("Unexpected null session. A cursor creating command should have set this");
+        }
         const getMoreOperation = new get_more_1.GetMoreOperation(this.namespace, this.id, this.server, {
           ...this.cursorOptions,
           session: this.session,
@@ -25509,6 +25496,383 @@ var require_mongo_credentials = __commonJS({
       }
     };
     exports2.MongoCredentials = MongoCredentials;
+  }
+});
+
+// node_modules/mongodb/package.json
+var require_package2 = __commonJS({
+  "node_modules/mongodb/package.json"(exports2, module2) {
+    module2.exports = {
+      name: "mongodb",
+      version: "6.18.0",
+      description: "The official MongoDB driver for Node.js",
+      main: "lib/index.js",
+      files: [
+        "lib",
+        "src",
+        "etc/prepare.js",
+        "mongodb.d.ts",
+        "tsconfig.json"
+      ],
+      types: "mongodb.d.ts",
+      repository: {
+        type: "git",
+        url: "git@github.com:mongodb/node-mongodb-native.git"
+      },
+      keywords: [
+        "mongodb",
+        "driver",
+        "official"
+      ],
+      author: {
+        name: "The MongoDB NodeJS Team",
+        email: "dbx-node@mongodb.com"
+      },
+      dependencies: {
+        "@mongodb-js/saslprep": "^1.1.9",
+        bson: "^6.10.4",
+        "mongodb-connection-string-url": "^3.0.0"
+      },
+      peerDependencies: {
+        "@aws-sdk/credential-providers": "^3.188.0",
+        "@mongodb-js/zstd": "^1.1.0 || ^2.0.0",
+        "gcp-metadata": "^5.2.0",
+        kerberos: "^2.0.1",
+        "mongodb-client-encryption": ">=6.0.0 <7",
+        snappy: "^7.2.2",
+        socks: "^2.7.1"
+      },
+      peerDependenciesMeta: {
+        "@aws-sdk/credential-providers": {
+          optional: true
+        },
+        "@mongodb-js/zstd": {
+          optional: true
+        },
+        kerberos: {
+          optional: true
+        },
+        snappy: {
+          optional: true
+        },
+        "mongodb-client-encryption": {
+          optional: true
+        },
+        "gcp-metadata": {
+          optional: true
+        },
+        socks: {
+          optional: true
+        }
+      },
+      devDependencies: {
+        "@aws-sdk/credential-providers": "^3.632.0",
+        "@iarna/toml": "^2.2.5",
+        "@istanbuljs/nyc-config-typescript": "^1.0.2",
+        "@microsoft/api-extractor": "^7.52.5",
+        "@microsoft/tsdoc-config": "^0.17.1",
+        "@mongodb-js/zstd": "^2.0.1",
+        "@types/chai": "^4.3.17",
+        "@types/chai-subset": "^1.3.5",
+        "@types/express": "^5.0.1",
+        "@types/kerberos": "^1.1.5",
+        "@types/mocha": "^10.0.9",
+        "@types/node": "^22.15.3",
+        "@types/saslprep": "^1.0.3",
+        "@types/semver": "^7.7.0",
+        "@types/sinon": "^17.0.4",
+        "@types/sinon-chai": "^4.0.0",
+        "@types/whatwg-url": "^13.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.31.1",
+        "@typescript-eslint/parser": "^8.31.1",
+        chai: "^4.4.1",
+        "chai-subset": "^1.6.0",
+        chalk: "^4.1.2",
+        eslint: "^9.25.1",
+        "eslint-config-prettier": "^10.1.2",
+        "eslint-plugin-mocha": "^10.4.1",
+        "eslint-plugin-prettier": "^5.2.3",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "eslint-plugin-tsdoc": "^0.4.0",
+        "eslint-plugin-unused-imports": "^4.1.4",
+        express: "^5.1.0",
+        "gcp-metadata": "^5.3.0",
+        "js-yaml": "^4.1.0",
+        mocha: "^10.8.2",
+        "mocha-sinon": "^2.1.2",
+        "mongodb-client-encryption": "^6.4.0",
+        "mongodb-legacy": "^6.1.3",
+        nyc: "^15.1.0",
+        prettier: "^3.5.3",
+        semver: "^7.7.0",
+        sinon: "^18.0.1",
+        "sinon-chai": "^3.7.0",
+        snappy: "^7.2.2",
+        socks: "^2.8.1",
+        "source-map-support": "^0.5.21",
+        "ts-node": "^10.9.2",
+        tsd: "^0.32.0",
+        typescript: "5.8.3",
+        "typescript-cached-transpile": "^0.0.6",
+        "v8-heapsnapshot": "^1.3.1",
+        yargs: "^17.7.2"
+      },
+      license: "Apache-2.0",
+      engines: {
+        node: ">=16.20.1"
+      },
+      bugs: {
+        url: "https://jira.mongodb.org/projects/NODE/issues/"
+      },
+      homepage: "https://github.com/mongodb/node-mongodb-native",
+      scripts: {
+        "build:evergreen": "node .evergreen/generate_evergreen_tasks.js",
+        "build:ts": "node ./node_modules/typescript/bin/tsc",
+        "build:dts": "npm run build:ts && api-extractor run && node etc/clean_definition_files.cjs && ESLINT_USE_FLAT_CONFIG=false eslint --no-ignore --fix mongodb.d.ts lib/beta.d.ts",
+        "build:docs": "./etc/docs/build.ts",
+        "build:typedoc": "typedoc",
+        "build:nightly": "node ./.github/scripts/nightly.mjs",
+        "check:bench": "npm --prefix test/benchmarks/driver_bench start",
+        "check:coverage": "nyc npm run test:all",
+        "check:integration-coverage": "nyc npm run check:test",
+        "check:lambda": "nyc mocha --config test/mocha_lambda.js test/integration/node-specific/examples/handler.test.js",
+        "check:lambda:aws": "nyc mocha --config test/mocha_lambda.js test/integration/node-specific/examples/aws_handler.test.js",
+        "check:lint": "npm run build:dts && npm run check:dts && npm run check:eslint && npm run check:tsd",
+        "check:eslint": "npm run build:dts && ESLINT_USE_FLAT_CONFIG=false eslint -v && ESLINT_USE_FLAT_CONFIG=false eslint --max-warnings=0 --ext '.js,.ts' src test",
+        "check:tsd": "tsd --version && tsd",
+        "check:dependencies": "mocha test/action/dependency.test.ts",
+        "check:dts": "node ./node_modules/typescript/bin/tsc --noEmit mongodb.d.ts && tsd",
+        "check:search-indexes": "nyc mocha --config test/mocha_mongodb.js test/manual/search-index-management.prose.test.ts",
+        "check:test": "mocha --config test/mocha_mongodb.js test/integration",
+        "check:unit": "nyc mocha test/unit",
+        "check:ts": "node ./node_modules/typescript/bin/tsc -v && node ./node_modules/typescript/bin/tsc --noEmit",
+        "check:atlas": "nyc mocha --config test/manual/mocharc.js test/manual/atlas_connectivity.test.ts",
+        "check:resource-management": "nyc mocha --config test/manual/mocharc.js test/manual/resource_management.test.ts",
+        "check:drivers-atlas-testing": "nyc mocha --config test/mocha_mongodb.js test/atlas/drivers_atlas_testing.test.ts",
+        "check:adl": "nyc mocha --config test/mocha_mongodb.js test/manual/atlas-data-lake-testing",
+        "check:aws": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_aws.test.ts",
+        "check:oidc-auth": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/auth.spec.test.ts",
+        "check:oidc-test": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_oidc.prose.test.ts",
+        "check:oidc-azure": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_oidc_azure.prose.05.test.ts",
+        "check:oidc-gcp": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_oidc_gcp.prose.06.test.ts",
+        "check:oidc-k8s": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_oidc_k8s.prose.07.test.ts",
+        "check:kerberos": "nyc mocha --config test/manual/mocharc.js test/manual/kerberos.test.ts",
+        "check:tls": "nyc mocha --config test/manual/mocharc.js test/manual/tls_support.test.ts",
+        "check:ldap": "nyc mocha --config test/manual/mocharc.js test/manual/ldap.test.ts",
+        "check:socks5": "nyc mocha --config test/manual/mocharc.js test/manual/socks5.test.ts",
+        "check:csfle": "nyc mocha --config test/mocha_mongodb.js test/integration/client-side-encryption",
+        "check:snappy": "nyc mocha test/unit/assorted/snappy.test.js",
+        "check:x509": "nyc mocha test/manual/x509_auth.test.ts",
+        "fix:eslint": "npm run check:eslint -- --fix",
+        prepare: "node etc/prepare.js",
+        "preview:docs": "ts-node etc/docs/preview.ts",
+        test: "npm run check:lint && npm run test:all",
+        "test:all": "npm run check:unit && npm run check:test",
+        "update:docs": "npm run build:docs -- --yes"
+      },
+      tsd: {
+        directory: "test/types",
+        compilerOptions: {
+          strict: true,
+          target: "esnext",
+          module: "commonjs",
+          moduleResolution: "node"
+        }
+      }
+    };
+  }
+});
+
+// node_modules/mongodb/lib/cmap/handshake/client_metadata.js
+var require_client_metadata = __commonJS({
+  "node_modules/mongodb/lib/cmap/handshake/client_metadata.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.LimitedSizeDocument = void 0;
+    exports2.makeClientMetadata = makeClientMetadata;
+    exports2.addContainerMetadata = addContainerMetadata;
+    exports2.getFAASEnv = getFAASEnv;
+    var os = require("os");
+    var process2 = require("process");
+    var bson_1 = require_bson2();
+    var error_1 = require_error();
+    var utils_1 = require_utils();
+    var NODE_DRIVER_VERSION = require_package2().version;
+    var LimitedSizeDocument = class {
+      constructor(maxSize) {
+        this.document = /* @__PURE__ */ new Map();
+        this.documentSize = 5;
+        this.maxSize = maxSize;
+      }
+      /** Only adds key/value if the bsonByteLength is less than MAX_SIZE */
+      ifItFitsItSits(key, value) {
+        const newElementSize = bson_1.BSON.serialize((/* @__PURE__ */ new Map()).set(key, value)).byteLength - 5;
+        if (newElementSize + this.documentSize > this.maxSize) {
+          return false;
+        }
+        this.documentSize += newElementSize;
+        this.document.set(key, value);
+        return true;
+      }
+      toObject() {
+        return bson_1.BSON.deserialize(bson_1.BSON.serialize(this.document), {
+          promoteLongs: false,
+          promoteBuffers: false,
+          promoteValues: false,
+          useBigInt64: false
+        });
+      }
+    };
+    exports2.LimitedSizeDocument = LimitedSizeDocument;
+    function makeClientMetadata(options) {
+      const metadataDocument = new LimitedSizeDocument(512);
+      const { appName = "" } = options;
+      if (appName.length > 0) {
+        const name2 = Buffer.byteLength(appName, "utf8") <= 128 ? options.appName : Buffer.from(appName, "utf8").subarray(0, 128).toString("utf8");
+        metadataDocument.ifItFitsItSits("application", { name: name2 });
+      }
+      const { name = "", version = "", platform = "" } = options.driverInfo;
+      const driverInfo = {
+        name: name.length > 0 ? `nodejs|${name}` : "nodejs",
+        version: version.length > 0 ? `${NODE_DRIVER_VERSION}|${version}` : NODE_DRIVER_VERSION
+      };
+      if (options.additionalDriverInfo == null) {
+        throw new error_1.MongoRuntimeError("Client options `additionalDriverInfo` must always default to an empty array");
+      }
+      for (const { name: n = "", version: v = "" } of options.additionalDriverInfo) {
+        if (n.length > 0) {
+          driverInfo.name = `${driverInfo.name}|${n}`;
+        }
+        if (v.length > 0) {
+          driverInfo.version = `${driverInfo.version}|${v}`;
+        }
+      }
+      if (!metadataDocument.ifItFitsItSits("driver", driverInfo)) {
+        throw new error_1.MongoInvalidArgumentError("Unable to include driverInfo name and version, metadata cannot exceed 512 bytes");
+      }
+      let runtimeInfo = getRuntimeInfo();
+      if (platform.length > 0) {
+        runtimeInfo = `${runtimeInfo}|${platform}`;
+      }
+      for (const { platform: p = "" } of options.additionalDriverInfo) {
+        if (p.length > 0) {
+          runtimeInfo = `${runtimeInfo}|${p}`;
+        }
+      }
+      if (!metadataDocument.ifItFitsItSits("platform", runtimeInfo)) {
+        throw new error_1.MongoInvalidArgumentError("Unable to include driverInfo platform, metadata cannot exceed 512 bytes");
+      }
+      const osInfo = (/* @__PURE__ */ new Map()).set("name", process2.platform).set("architecture", process2.arch).set("version", os.release()).set("type", os.type());
+      if (!metadataDocument.ifItFitsItSits("os", osInfo)) {
+        for (const key of osInfo.keys()) {
+          osInfo.delete(key);
+          if (osInfo.size === 0)
+            break;
+          if (metadataDocument.ifItFitsItSits("os", osInfo))
+            break;
+        }
+      }
+      const faasEnv = getFAASEnv();
+      if (faasEnv != null) {
+        if (!metadataDocument.ifItFitsItSits("env", faasEnv)) {
+          for (const key of faasEnv.keys()) {
+            faasEnv.delete(key);
+            if (faasEnv.size === 0)
+              break;
+            if (metadataDocument.ifItFitsItSits("env", faasEnv))
+              break;
+          }
+        }
+      }
+      return metadataDocument.toObject();
+    }
+    var dockerPromise;
+    async function getContainerMetadata() {
+      const containerMetadata = {};
+      dockerPromise ??= (0, utils_1.fileIsAccessible)("/.dockerenv");
+      const isDocker = await dockerPromise;
+      const { KUBERNETES_SERVICE_HOST = "" } = process2.env;
+      const isKubernetes = KUBERNETES_SERVICE_HOST.length > 0 ? true : false;
+      if (isDocker)
+        containerMetadata.runtime = "docker";
+      if (isKubernetes)
+        containerMetadata.orchestrator = "kubernetes";
+      return containerMetadata;
+    }
+    async function addContainerMetadata(originalMetadata) {
+      const containerMetadata = await getContainerMetadata();
+      if (Object.keys(containerMetadata).length === 0)
+        return originalMetadata;
+      const extendedMetadata = new LimitedSizeDocument(512);
+      const extendedEnvMetadata = { ...originalMetadata?.env, container: containerMetadata };
+      for (const [key, val] of Object.entries(originalMetadata)) {
+        if (key !== "env") {
+          extendedMetadata.ifItFitsItSits(key, val);
+        } else {
+          if (!extendedMetadata.ifItFitsItSits("env", extendedEnvMetadata)) {
+            extendedMetadata.ifItFitsItSits("env", val);
+          }
+        }
+      }
+      if (!("env" in originalMetadata)) {
+        extendedMetadata.ifItFitsItSits("env", extendedEnvMetadata);
+      }
+      return extendedMetadata.toObject();
+    }
+    function getFAASEnv() {
+      const { AWS_EXECUTION_ENV = "", AWS_LAMBDA_RUNTIME_API = "", FUNCTIONS_WORKER_RUNTIME = "", K_SERVICE = "", FUNCTION_NAME = "", VERCEL = "", AWS_LAMBDA_FUNCTION_MEMORY_SIZE = "", AWS_REGION = "", FUNCTION_MEMORY_MB = "", FUNCTION_REGION = "", FUNCTION_TIMEOUT_SEC = "", VERCEL_REGION = "" } = process2.env;
+      const isAWSFaaS = AWS_EXECUTION_ENV.startsWith("AWS_Lambda_") || AWS_LAMBDA_RUNTIME_API.length > 0;
+      const isAzureFaaS = FUNCTIONS_WORKER_RUNTIME.length > 0;
+      const isGCPFaaS = K_SERVICE.length > 0 || FUNCTION_NAME.length > 0;
+      const isVercelFaaS = VERCEL.length > 0;
+      const faasEnv = /* @__PURE__ */ new Map();
+      if (isVercelFaaS && !(isAzureFaaS || isGCPFaaS)) {
+        if (VERCEL_REGION.length > 0) {
+          faasEnv.set("region", VERCEL_REGION);
+        }
+        faasEnv.set("name", "vercel");
+        return faasEnv;
+      }
+      if (isAWSFaaS && !(isAzureFaaS || isGCPFaaS || isVercelFaaS)) {
+        if (AWS_REGION.length > 0) {
+          faasEnv.set("region", AWS_REGION);
+        }
+        if (AWS_LAMBDA_FUNCTION_MEMORY_SIZE.length > 0 && Number.isInteger(+AWS_LAMBDA_FUNCTION_MEMORY_SIZE)) {
+          faasEnv.set("memory_mb", new bson_1.Int32(AWS_LAMBDA_FUNCTION_MEMORY_SIZE));
+        }
+        faasEnv.set("name", "aws.lambda");
+        return faasEnv;
+      }
+      if (isAzureFaaS && !(isGCPFaaS || isAWSFaaS || isVercelFaaS)) {
+        faasEnv.set("name", "azure.func");
+        return faasEnv;
+      }
+      if (isGCPFaaS && !(isAzureFaaS || isAWSFaaS || isVercelFaaS)) {
+        if (FUNCTION_REGION.length > 0) {
+          faasEnv.set("region", FUNCTION_REGION);
+        }
+        if (FUNCTION_MEMORY_MB.length > 0 && Number.isInteger(+FUNCTION_MEMORY_MB)) {
+          faasEnv.set("memory_mb", new bson_1.Int32(FUNCTION_MEMORY_MB));
+        }
+        if (FUNCTION_TIMEOUT_SEC.length > 0 && Number.isInteger(+FUNCTION_TIMEOUT_SEC)) {
+          faasEnv.set("timeout_sec", new bson_1.Int32(FUNCTION_TIMEOUT_SEC));
+        }
+        faasEnv.set("name", "gcp.func");
+        return faasEnv;
+      }
+      return null;
+    }
+    function getRuntimeInfo() {
+      if ("Deno" in globalThis) {
+        const version = typeof Deno?.version?.deno === "string" ? Deno?.version?.deno : "0.0.0-unknown";
+        return `Deno v${version}, ${os.endianness()}`;
+      }
+      if ("Bun" in globalThis) {
+        const version = typeof Bun?.version === "string" ? Bun?.version : "0.0.0-unknown";
+        return `Bun v${version}, ${os.endianness()}`;
+      }
+      return `Node.js ${process2.version}, ${os.endianness()}`;
+    }
   }
 });
 
@@ -29439,367 +29803,6 @@ var require_lib2 = __commonJS({
   }
 });
 
-// node_modules/mongodb/package.json
-var require_package2 = __commonJS({
-  "node_modules/mongodb/package.json"(exports2, module2) {
-    module2.exports = {
-      name: "mongodb",
-      version: "6.17.0",
-      description: "The official MongoDB driver for Node.js",
-      main: "lib/index.js",
-      files: [
-        "lib",
-        "src",
-        "etc/prepare.js",
-        "mongodb.d.ts",
-        "tsconfig.json"
-      ],
-      types: "mongodb.d.ts",
-      repository: {
-        type: "git",
-        url: "git@github.com:mongodb/node-mongodb-native.git"
-      },
-      keywords: [
-        "mongodb",
-        "driver",
-        "official"
-      ],
-      author: {
-        name: "The MongoDB NodeJS Team",
-        email: "dbx-node@mongodb.com"
-      },
-      dependencies: {
-        "@mongodb-js/saslprep": "^1.1.9",
-        bson: "^6.10.4",
-        "mongodb-connection-string-url": "^3.0.0"
-      },
-      peerDependencies: {
-        "@aws-sdk/credential-providers": "^3.188.0",
-        "@mongodb-js/zstd": "^1.1.0 || ^2.0.0",
-        "gcp-metadata": "^5.2.0",
-        kerberos: "^2.0.1",
-        "mongodb-client-encryption": ">=6.0.0 <7",
-        snappy: "^7.2.2",
-        socks: "^2.7.1"
-      },
-      peerDependenciesMeta: {
-        "@aws-sdk/credential-providers": {
-          optional: true
-        },
-        "@mongodb-js/zstd": {
-          optional: true
-        },
-        kerberos: {
-          optional: true
-        },
-        snappy: {
-          optional: true
-        },
-        "mongodb-client-encryption": {
-          optional: true
-        },
-        "gcp-metadata": {
-          optional: true
-        },
-        socks: {
-          optional: true
-        }
-      },
-      devDependencies: {
-        "@aws-sdk/credential-providers": "^3.632.0",
-        "@iarna/toml": "^2.2.5",
-        "@istanbuljs/nyc-config-typescript": "^1.0.2",
-        "@microsoft/api-extractor": "^7.52.5",
-        "@microsoft/tsdoc-config": "^0.17.1",
-        "@mongodb-js/zstd": "^2.0.1",
-        "@types/chai": "^4.3.17",
-        "@types/chai-subset": "^1.3.5",
-        "@types/express": "^5.0.1",
-        "@types/kerberos": "^1.1.5",
-        "@types/mocha": "^10.0.9",
-        "@types/node": "^22.15.3",
-        "@types/saslprep": "^1.0.3",
-        "@types/semver": "^7.7.0",
-        "@types/sinon": "^17.0.4",
-        "@types/sinon-chai": "^4.0.0",
-        "@types/whatwg-url": "^13.0.0",
-        "@typescript-eslint/eslint-plugin": "^8.31.1",
-        "@typescript-eslint/parser": "^8.31.1",
-        chai: "^4.4.1",
-        "chai-subset": "^1.6.0",
-        chalk: "^4.1.2",
-        eslint: "^9.25.1",
-        "eslint-config-prettier": "^10.1.2",
-        "eslint-plugin-mocha": "^10.4.1",
-        "eslint-plugin-prettier": "^5.2.3",
-        "eslint-plugin-simple-import-sort": "^12.1.1",
-        "eslint-plugin-tsdoc": "^0.4.0",
-        "eslint-plugin-unused-imports": "^4.1.4",
-        express: "^5.1.0",
-        "gcp-metadata": "^5.3.0",
-        "js-yaml": "^4.1.0",
-        mocha: "^10.8.2",
-        "mocha-sinon": "^2.1.2",
-        "mongodb-client-encryption": "^6.4.0",
-        "mongodb-legacy": "^6.1.3",
-        nyc: "^15.1.0",
-        prettier: "^3.5.3",
-        semver: "^7.7.0",
-        sinon: "^18.0.1",
-        "sinon-chai": "^3.7.0",
-        snappy: "^7.2.2",
-        socks: "^2.8.1",
-        "source-map-support": "^0.5.21",
-        "ts-node": "^10.9.2",
-        tsd: "^0.31.2",
-        typescript: "5.5",
-        "typescript-cached-transpile": "^0.0.6",
-        "v8-heapsnapshot": "^1.3.1",
-        yargs: "^17.7.2"
-      },
-      license: "Apache-2.0",
-      engines: {
-        node: ">=16.20.1"
-      },
-      bugs: {
-        url: "https://jira.mongodb.org/projects/NODE/issues/"
-      },
-      homepage: "https://github.com/mongodb/node-mongodb-native",
-      scripts: {
-        "build:evergreen": "node .evergreen/generate_evergreen_tasks.js",
-        "build:ts": "node ./node_modules/typescript/bin/tsc",
-        "build:dts": "npm run build:ts && api-extractor run && node etc/clean_definition_files.cjs && ESLINT_USE_FLAT_CONFIG=false eslint --no-ignore --fix mongodb.d.ts lib/beta.d.ts",
-        "build:docs": "./etc/docs/build.ts",
-        "build:typedoc": "typedoc",
-        "build:nightly": "node ./.github/scripts/nightly.mjs",
-        "check:bench": "npm --prefix test/benchmarks/driver_bench start",
-        "check:coverage": "nyc npm run test:all",
-        "check:integration-coverage": "nyc npm run check:test",
-        "check:lambda": "nyc mocha --config test/mocha_lambda.js test/integration/node-specific/examples/handler.test.js",
-        "check:lambda:aws": "nyc mocha --config test/mocha_lambda.js test/integration/node-specific/examples/aws_handler.test.js",
-        "check:lint": "npm run build:dts && npm run check:dts && npm run check:eslint && npm run check:tsd",
-        "check:eslint": "npm run build:dts && ESLINT_USE_FLAT_CONFIG=false eslint -v && ESLINT_USE_FLAT_CONFIG=false eslint --max-warnings=0 --ext '.js,.ts' src test",
-        "check:tsd": "tsd --version && tsd",
-        "check:dependencies": "mocha test/action/dependency.test.ts",
-        "check:dts": "node ./node_modules/typescript/bin/tsc --noEmit mongodb.d.ts && tsd",
-        "check:search-indexes": "nyc mocha --config test/mocha_mongodb.js test/manual/search-index-management.prose.test.ts",
-        "check:test": "mocha --config test/mocha_mongodb.js test/integration",
-        "check:unit": "nyc mocha test/unit",
-        "check:ts": "node ./node_modules/typescript/bin/tsc -v && node ./node_modules/typescript/bin/tsc --noEmit",
-        "check:atlas": "nyc mocha --config test/manual/mocharc.js test/manual/atlas_connectivity.test.ts",
-        "check:resource-management": "nyc mocha --config test/manual/mocharc.js test/manual/resource_management.test.ts",
-        "check:drivers-atlas-testing": "nyc mocha --config test/mocha_mongodb.js test/atlas/drivers_atlas_testing.test.ts",
-        "check:adl": "nyc mocha --config test/mocha_mongodb.js test/manual/atlas-data-lake-testing",
-        "check:aws": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_aws.test.ts",
-        "check:oidc-auth": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/auth.spec.test.ts",
-        "check:oidc-test": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_oidc.prose.test.ts",
-        "check:oidc-azure": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_oidc_azure.prose.05.test.ts",
-        "check:oidc-gcp": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_oidc_gcp.prose.06.test.ts",
-        "check:oidc-k8s": "nyc mocha --config test/mocha_mongodb.js test/integration/auth/mongodb_oidc_k8s.prose.07.test.ts",
-        "check:kerberos": "nyc mocha --config test/manual/mocharc.js test/manual/kerberos.test.ts",
-        "check:tls": "nyc mocha --config test/manual/mocharc.js test/manual/tls_support.test.ts",
-        "check:ldap": "nyc mocha --config test/manual/mocharc.js test/manual/ldap.test.ts",
-        "check:socks5": "nyc mocha --config test/manual/mocharc.js test/manual/socks5.test.ts",
-        "check:csfle": "nyc mocha --config test/mocha_mongodb.js test/integration/client-side-encryption",
-        "check:snappy": "nyc mocha test/unit/assorted/snappy.test.js",
-        "check:x509": "nyc mocha test/manual/x509_auth.test.ts",
-        "fix:eslint": "npm run check:eslint -- --fix",
-        prepare: "node etc/prepare.js",
-        "preview:docs": "ts-node etc/docs/preview.ts",
-        test: "npm run check:lint && npm run test:all",
-        "test:all": "npm run check:unit && npm run check:test",
-        "update:docs": "npm run build:docs -- --yes"
-      },
-      tsd: {
-        directory: "test/types",
-        compilerOptions: {
-          strict: true,
-          target: "esnext",
-          module: "commonjs",
-          moduleResolution: "node"
-        }
-      }
-    };
-  }
-});
-
-// node_modules/mongodb/lib/cmap/handshake/client_metadata.js
-var require_client_metadata = __commonJS({
-  "node_modules/mongodb/lib/cmap/handshake/client_metadata.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.LimitedSizeDocument = void 0;
-    exports2.makeClientMetadata = makeClientMetadata;
-    exports2.addContainerMetadata = addContainerMetadata;
-    exports2.getFAASEnv = getFAASEnv;
-    var os = require("os");
-    var process2 = require("process");
-    var bson_1 = require_bson2();
-    var error_1 = require_error();
-    var utils_1 = require_utils();
-    var NODE_DRIVER_VERSION = require_package2().version;
-    var LimitedSizeDocument = class {
-      constructor(maxSize) {
-        this.maxSize = maxSize;
-        this.document = /* @__PURE__ */ new Map();
-        this.documentSize = 5;
-      }
-      /** Only adds key/value if the bsonByteLength is less than MAX_SIZE */
-      ifItFitsItSits(key, value) {
-        const newElementSize = bson_1.BSON.serialize((/* @__PURE__ */ new Map()).set(key, value)).byteLength - 5;
-        if (newElementSize + this.documentSize > this.maxSize) {
-          return false;
-        }
-        this.documentSize += newElementSize;
-        this.document.set(key, value);
-        return true;
-      }
-      toObject() {
-        return bson_1.BSON.deserialize(bson_1.BSON.serialize(this.document), {
-          promoteLongs: false,
-          promoteBuffers: false,
-          promoteValues: false,
-          useBigInt64: false
-        });
-      }
-    };
-    exports2.LimitedSizeDocument = LimitedSizeDocument;
-    function makeClientMetadata(options) {
-      const metadataDocument = new LimitedSizeDocument(512);
-      const { appName = "" } = options;
-      if (appName.length > 0) {
-        const name2 = Buffer.byteLength(appName, "utf8") <= 128 ? options.appName : Buffer.from(appName, "utf8").subarray(0, 128).toString("utf8");
-        metadataDocument.ifItFitsItSits("application", { name: name2 });
-      }
-      const { name = "", version = "", platform = "" } = options.driverInfo;
-      const driverInfo = {
-        name: name.length > 0 ? `nodejs|${name}` : "nodejs",
-        version: version.length > 0 ? `${NODE_DRIVER_VERSION}|${version}` : NODE_DRIVER_VERSION
-      };
-      if (!metadataDocument.ifItFitsItSits("driver", driverInfo)) {
-        throw new error_1.MongoInvalidArgumentError("Unable to include driverInfo name and version, metadata cannot exceed 512 bytes");
-      }
-      let runtimeInfo = getRuntimeInfo();
-      if (platform.length > 0) {
-        runtimeInfo = `${runtimeInfo}|${platform}`;
-      }
-      if (!metadataDocument.ifItFitsItSits("platform", runtimeInfo)) {
-        throw new error_1.MongoInvalidArgumentError("Unable to include driverInfo platform, metadata cannot exceed 512 bytes");
-      }
-      const osInfo = (/* @__PURE__ */ new Map()).set("name", process2.platform).set("architecture", process2.arch).set("version", os.release()).set("type", os.type());
-      if (!metadataDocument.ifItFitsItSits("os", osInfo)) {
-        for (const key of osInfo.keys()) {
-          osInfo.delete(key);
-          if (osInfo.size === 0)
-            break;
-          if (metadataDocument.ifItFitsItSits("os", osInfo))
-            break;
-        }
-      }
-      const faasEnv = getFAASEnv();
-      if (faasEnv != null) {
-        if (!metadataDocument.ifItFitsItSits("env", faasEnv)) {
-          for (const key of faasEnv.keys()) {
-            faasEnv.delete(key);
-            if (faasEnv.size === 0)
-              break;
-            if (metadataDocument.ifItFitsItSits("env", faasEnv))
-              break;
-          }
-        }
-      }
-      return metadataDocument.toObject();
-    }
-    var dockerPromise;
-    async function getContainerMetadata() {
-      const containerMetadata = {};
-      dockerPromise ??= (0, utils_1.fileIsAccessible)("/.dockerenv");
-      const isDocker = await dockerPromise;
-      const { KUBERNETES_SERVICE_HOST = "" } = process2.env;
-      const isKubernetes = KUBERNETES_SERVICE_HOST.length > 0 ? true : false;
-      if (isDocker)
-        containerMetadata.runtime = "docker";
-      if (isKubernetes)
-        containerMetadata.orchestrator = "kubernetes";
-      return containerMetadata;
-    }
-    async function addContainerMetadata(originalMetadata) {
-      const containerMetadata = await getContainerMetadata();
-      if (Object.keys(containerMetadata).length === 0)
-        return originalMetadata;
-      const extendedMetadata = new LimitedSizeDocument(512);
-      const extendedEnvMetadata = { ...originalMetadata?.env, container: containerMetadata };
-      for (const [key, val] of Object.entries(originalMetadata)) {
-        if (key !== "env") {
-          extendedMetadata.ifItFitsItSits(key, val);
-        } else {
-          if (!extendedMetadata.ifItFitsItSits("env", extendedEnvMetadata)) {
-            extendedMetadata.ifItFitsItSits("env", val);
-          }
-        }
-      }
-      if (!("env" in originalMetadata)) {
-        extendedMetadata.ifItFitsItSits("env", extendedEnvMetadata);
-      }
-      return extendedMetadata.toObject();
-    }
-    function getFAASEnv() {
-      const { AWS_EXECUTION_ENV = "", AWS_LAMBDA_RUNTIME_API = "", FUNCTIONS_WORKER_RUNTIME = "", K_SERVICE = "", FUNCTION_NAME = "", VERCEL = "", AWS_LAMBDA_FUNCTION_MEMORY_SIZE = "", AWS_REGION = "", FUNCTION_MEMORY_MB = "", FUNCTION_REGION = "", FUNCTION_TIMEOUT_SEC = "", VERCEL_REGION = "" } = process2.env;
-      const isAWSFaaS = AWS_EXECUTION_ENV.startsWith("AWS_Lambda_") || AWS_LAMBDA_RUNTIME_API.length > 0;
-      const isAzureFaaS = FUNCTIONS_WORKER_RUNTIME.length > 0;
-      const isGCPFaaS = K_SERVICE.length > 0 || FUNCTION_NAME.length > 0;
-      const isVercelFaaS = VERCEL.length > 0;
-      const faasEnv = /* @__PURE__ */ new Map();
-      if (isVercelFaaS && !(isAzureFaaS || isGCPFaaS)) {
-        if (VERCEL_REGION.length > 0) {
-          faasEnv.set("region", VERCEL_REGION);
-        }
-        faasEnv.set("name", "vercel");
-        return faasEnv;
-      }
-      if (isAWSFaaS && !(isAzureFaaS || isGCPFaaS || isVercelFaaS)) {
-        if (AWS_REGION.length > 0) {
-          faasEnv.set("region", AWS_REGION);
-        }
-        if (AWS_LAMBDA_FUNCTION_MEMORY_SIZE.length > 0 && Number.isInteger(+AWS_LAMBDA_FUNCTION_MEMORY_SIZE)) {
-          faasEnv.set("memory_mb", new bson_1.Int32(AWS_LAMBDA_FUNCTION_MEMORY_SIZE));
-        }
-        faasEnv.set("name", "aws.lambda");
-        return faasEnv;
-      }
-      if (isAzureFaaS && !(isGCPFaaS || isAWSFaaS || isVercelFaaS)) {
-        faasEnv.set("name", "azure.func");
-        return faasEnv;
-      }
-      if (isGCPFaaS && !(isAzureFaaS || isAWSFaaS || isVercelFaaS)) {
-        if (FUNCTION_REGION.length > 0) {
-          faasEnv.set("region", FUNCTION_REGION);
-        }
-        if (FUNCTION_MEMORY_MB.length > 0 && Number.isInteger(+FUNCTION_MEMORY_MB)) {
-          faasEnv.set("memory_mb", new bson_1.Int32(FUNCTION_MEMORY_MB));
-        }
-        if (FUNCTION_TIMEOUT_SEC.length > 0 && Number.isInteger(+FUNCTION_TIMEOUT_SEC)) {
-          faasEnv.set("timeout_sec", new bson_1.Int32(FUNCTION_TIMEOUT_SEC));
-        }
-        faasEnv.set("name", "gcp.func");
-        return faasEnv;
-      }
-      return null;
-    }
-    function getRuntimeInfo() {
-      if ("Deno" in globalThis) {
-        const version = typeof Deno?.version?.deno === "string" ? Deno?.version?.deno : "0.0.0-unknown";
-        return `Deno v${version}, ${os.endianness()}`;
-      }
-      if ("Bun" in globalThis) {
-        const version = typeof Bun?.version === "string" ? Bun?.version : "0.0.0-unknown";
-        return `Bun v${version}, ${os.endianness()}`;
-      }
-      return `Node.js ${process2.version}, ${os.endianness()}`;
-    }
-  }
-});
-
 // node_modules/mongodb/lib/cmap/commands.js
 var require_commands = __commonJS({
   "node_modules/mongodb/lib/cmap/commands.js"(exports2) {
@@ -29825,8 +29828,6 @@ var require_commands = __commonJS({
     var encodeUTF8Into = BSON.BSON.onDemand.ByteUtils.encodeUTF8Into;
     var OpQueryRequest = class _OpQueryRequest {
       constructor(databaseName, query, options) {
-        this.databaseName = databaseName;
-        this.query = query;
         this.moreToCome = false;
         const ns = `${databaseName}.$cmd`;
         if (typeof databaseName !== "string") {
@@ -29837,6 +29838,8 @@ var require_commands = __commonJS({
         if (ns.indexOf("\0") !== -1) {
           throw new error_1.MongoRuntimeError("Namespace cannot contain a null character");
         }
+        this.databaseName = databaseName;
+        this.query = query;
         this.ns = ns;
         this.numberToSkip = options.numberToSkip || 0;
         this.numberToReturn = options.numberToReturn || 0;
@@ -30065,11 +30068,10 @@ var require_commands = __commonJS({
     exports2.DocumentSequence = DocumentSequence;
     var OpMsgRequest = class _OpMsgRequest {
       constructor(databaseName, command, options) {
-        this.databaseName = databaseName;
-        this.command = command;
-        this.options = options;
         if (command == null)
           throw new error_1.MongoInvalidArgumentError("Query document must be specified for query");
+        this.databaseName = databaseName;
+        this.command = command;
         this.command.$db = databaseName;
         this.options = options ?? {};
         this.requestId = options.requestId ? options.requestId : _OpMsgRequest.getRequestId();
@@ -30210,7 +30212,10 @@ var require_commands = __commonJS({
     var OpCompressedRequest = class {
       constructor(command, options) {
         this.command = command;
-        this.options = options;
+        this.options = {
+          zlibCompressionLevel: options.zlibCompressionLevel,
+          agreedCompressor: options.agreedCompressor
+        };
       }
       // Return whether a command contains an uncompressible command term
       // Will return true if command contains no uncompressible command terms
@@ -30924,11 +30929,7 @@ var require_state_machine = __commonJS({
     var INSECURE_TLS_OPTIONS = [
       "tlsInsecure",
       "tlsAllowInvalidCertificates",
-      "tlsAllowInvalidHostnames",
-      // These options are disallowed by the spec, so we explicitly filter them out if provided, even
-      // though the StateMachine does not declare support for these options.
-      "tlsDisableOCSPEndpointCheck",
-      "tlsDisableCertificateRevocationCheck"
+      "tlsAllowInvalidHostnames"
     ];
     function debug(msg) {
       if (process.env.MONGODB_CRYPT_DEBUG) {
@@ -32879,22 +32880,29 @@ var require_transactions = __commonJS({
       get server() {
         return this._pinnedServer;
       }
+      /** @deprecated - Will be made internal in a future major release. */
       get recoveryToken() {
         return this._recoveryToken;
       }
+      /** @deprecated - Will be made internal in a future major release. */
       get isPinned() {
         return !!this.server;
       }
-      /** @returns Whether the transaction has started */
+      /**
+       * @deprecated - Will be made internal in a future major release.
+       * @returns Whether the transaction has started
+       */
       get isStarting() {
         return this.state === exports2.TxnState.STARTING_TRANSACTION;
       }
       /**
+       * @deprecated - Will be made internal in a future major release.
        * @returns Whether this session is presently in a transaction
        */
       get isActive() {
         return ACTIVE_STATES.has(this.state);
       }
+      /** @deprecated - Will be made internal in a future major release. */
       get isCommitted() {
         return COMMITTED_STATES.has(this.state);
       }
@@ -33692,6 +33700,7 @@ var require_command_monitoring_events = __commonJS({
         this.duration = (0, utils_1.calculateDurationInMs)(started);
         this.reply = maybeRedact(commandName, cmd, extractReply(reply));
         this.serverConnectionId = serverConnectionId;
+        this.databaseName = command.databaseName;
       }
       /* @internal */
       get hasServiceId() {
@@ -33722,6 +33731,7 @@ var require_command_monitoring_events = __commonJS({
         this.duration = (0, utils_1.calculateDurationInMs)(started);
         this.failure = maybeRedact(commandName, cmd, error);
         this.serverConnectionId = serverConnectionId;
+        this.databaseName = command.databaseName;
       }
       /* @internal */
       get hasServiceId() {
@@ -33927,6 +33937,10 @@ var require_on_data = __commonJS({
         },
         [Symbol.asyncIterator]() {
           return this;
+        },
+        // Note this should currently not be used, but is required by the AsyncGenerator interface.
+        async [Symbol.asyncDispose]() {
+          await closeHandler();
         }
       };
       emitter.on("data", eventHandler);
@@ -35428,7 +35442,8 @@ var require_connection_pool = __commonJS({
           generation: this.generation,
           cancellationToken: this.cancellationToken,
           mongoLogger: this.mongoLogger,
-          authProviders: this.server.topology.client.s.authProviders
+          authProviders: this.server.topology.client.s.authProviders,
+          extendedMetadata: this.server.topology.client.options.extendedMetadata
         };
         this.pending++;
         const connectionCreatedTime = (0, utils_1.now)();
@@ -35480,7 +35495,7 @@ var require_connection_pool = __commonJS({
       }
       ensureMinPoolSize() {
         const minPoolSize = this.options.minPoolSize;
-        if (this.poolState !== exports2.PoolState.ready || minPoolSize === 0) {
+        if (this.poolState !== exports2.PoolState.ready) {
           return;
         }
         this.connections.prune((connection) => this.destroyConnectionIfPerished(connection));
@@ -36521,11 +36536,6 @@ var require_connection_string = __commonJS({
       };
       check("tlsInsecure", "tlsAllowInvalidCertificates");
       check("tlsInsecure", "tlsAllowInvalidHostnames");
-      check("tlsInsecure", "tlsDisableCertificateRevocationCheck");
-      check("tlsInsecure", "tlsDisableOCSPEndpointCheck");
-      check("tlsAllowInvalidCertificates", "tlsDisableCertificateRevocationCheck");
-      check("tlsAllowInvalidCertificates", "tlsDisableOCSPEndpointCheck");
-      check("tlsDisableCertificateRevocationCheck", "tlsDisableOCSPEndpointCheck");
     }
     function getBoolean(name, value) {
       if (typeof value === "boolean")
@@ -36760,6 +36770,7 @@ var require_connection_string = __commonJS({
         mongodbLogComponentSeverities: mongoOptions.mongodbLogComponentSeverities,
         mongodbLogMaxDocumentLength: mongoOptions.mongodbLogMaxDocumentLength
       });
+      mongoOptions.additionalDriverInfo = [];
       mongoOptions.metadata = (0, client_metadata_1.makeClientMetadata)(mongoOptions);
       mongoOptions.extendedMetadata = (0, client_metadata_1.addContainerMetadata)(mongoOptions.metadata).then(void 0, utils_1.squashError);
       return mongoOptions;
@@ -40340,6 +40351,7 @@ var require_mongo_client = __commonJS({
     var change_stream_1 = require_change_stream();
     var mongo_credentials_1 = require_mongo_credentials();
     var providers_1 = require_providers();
+    var client_metadata_1 = require_client_metadata();
     var connection_string_1 = require_connection_string();
     var constants_1 = require_constants2();
     var db_1 = require_db();
@@ -40397,6 +40409,15 @@ var require_mongo_client = __commonJS({
       /** @internal */
       async asyncDispose() {
         await this.close();
+      }
+      /**
+       * Append metadata to the client metadata after instantiation.
+       * @param driverInfo - Information about the application or library.
+       */
+      appendMetadata(driverInfo) {
+        this.options.additionalDriverInfo.push(driverInfo);
+        this.options.metadata = (0, client_metadata_1.makeClientMetadata)(this.options);
+        this.options.extendedMetadata = (0, client_metadata_1.addContainerMetadata)(this.options.metadata).then(void 0, utils_1.squashError).then((result) => result ?? {});
       }
       /** @internal */
       checkForNonGenuineHosts() {
@@ -40924,11 +40945,7 @@ var require_abstract_cursor = __commonJS({
         if (typeof options.maxAwaitTimeMS === "number") {
           this.cursorOptions.maxAwaitTimeMS = options.maxAwaitTimeMS;
         }
-        if (options.session instanceof sessions_1.ClientSession) {
-          this.cursorSession = options.session;
-        } else {
-          this.cursorSession = this.cursorClient.startSession({ owner: this, explicit: false });
-        }
+        this.cursorSession = options.session ?? null;
         this.deserializationOptions = {
           ...this.cursorOptions,
           validation: {
@@ -41359,11 +41376,11 @@ var require_abstract_cursor = __commonJS({
         this.initialized = false;
         this.hasEmittedClose = false;
         this.trackCursor();
-        if (this.cursorSession.explicit === false) {
+        if (this.cursorSession?.explicit === false) {
           if (!this.cursorSession.hasEnded) {
             this.cursorSession.endSession().then(void 0, utils_1.squashError);
           }
-          this.cursorSession = this.cursorClient.startSession({ owner: this, explicit: false });
+          this.cursorSession = null;
         }
       }
       /** @internal */
@@ -41373,6 +41390,9 @@ var require_abstract_cursor = __commonJS({
         }
         if (this.selectedServer == null) {
           throw new error_1.MongoRuntimeError("Unexpected null selectedServer. A cursor creating command should have set this");
+        }
+        if (this.cursorSession == null) {
+          throw new error_1.MongoRuntimeError("Unexpected null session. A cursor creating command should have set this");
         }
         const getMoreOptions = {
           ...this.cursorOptions,
@@ -41397,6 +41417,7 @@ var require_abstract_cursor = __commonJS({
           }), this);
         }
         try {
+          this.cursorSession ??= this.cursorClient.startSession({ owner: this, explicit: false });
           const state = await this._initialize(this.cursorSession);
           this.cursorOptions.omitMaxTimeMS = this.cursorOptions.timeoutMS != null;
           const response = state.response;
@@ -41461,29 +41482,38 @@ var require_abstract_cursor = __commonJS({
             return this.timeoutContext?.refreshed();
           }
         };
-        try {
-          if (!this.isKilled && this.cursorId && !this.cursorId.isZero() && this.cursorNamespace && this.selectedServer && !this.cursorSession.hasEnded) {
-            this.isKilled = true;
-            const cursorId = this.cursorId;
-            this.cursorId = bson_1.Long.ZERO;
-            await (0, execute_operation_1.executeOperation)(this.cursorClient, new kill_cursors_1.KillCursorsOperation(cursorId, this.cursorNamespace, this.selectedServer, {
-              session: this.cursorSession
-            }), timeoutContextForKillCursors());
-          }
-        } catch (error2) {
-          (0, utils_1.squashError)(error2);
-        } finally {
+        const withEmitClose = async (fn) => {
           try {
-            if (this.cursorSession?.owner === this) {
-              await this.cursorSession.endSession({ error });
-            }
-            if (!this.cursorSession?.inTransaction()) {
-              (0, sessions_1.maybeClearPinnedConnection)(this.cursorSession, { error });
-            }
+            await fn();
           } finally {
             this.emitClose();
           }
-        }
+        };
+        const close = async () => {
+          const session = this.cursorSession;
+          if (!session)
+            return;
+          try {
+            if (!this.isKilled && this.cursorId && !this.cursorId.isZero() && this.cursorNamespace && this.selectedServer && !session.hasEnded) {
+              this.isKilled = true;
+              const cursorId = this.cursorId;
+              this.cursorId = bson_1.Long.ZERO;
+              await (0, execute_operation_1.executeOperation)(this.cursorClient, new kill_cursors_1.KillCursorsOperation(cursorId, this.cursorNamespace, this.selectedServer, {
+                session
+              }), timeoutContextForKillCursors());
+            }
+          } catch (error2) {
+            (0, utils_1.squashError)(error2);
+          } finally {
+            if (session.owner === this) {
+              await session.endSession({ error });
+            }
+            if (!session.inTransaction()) {
+              (0, sessions_1.maybeClearPinnedConnection)(session, { error });
+            }
+          }
+        };
+        await withEmitClose(close);
       }
       /** @internal */
       emitClose() {
@@ -43598,21 +43628,43 @@ var nodemailer = require_nodemailer();
 var { MongoClient } = require_lib3();
 require_main().config();
 exports.handler = async (event) => {
+  console.log("Function started.");
   if (event.httpMethod !== "POST") {
+    console.log("Method Not Allowed.");
     return {
       statusCode: 405,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: "Method Not Allowed" })
     };
   }
-  const data = JSON.parse(event.body);
+  let data;
+  try {
+    data = JSON.parse(event.body);
+  } catch (parseError) {
+    console.error("\u274C JSON Parse Error:", parseError);
+    return {
+      statusCode: 400,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ success: false, error: "Invalid JSON in request body." })
+    };
+  }
   const { firstName, lastName, email, phone, message } = data;
+  console.log("Parsed request body:", { firstName, email });
   const userEmail = process.env.EMAIL_USER;
   const appPassword = process.env.EMAIL_PASS;
   const mongoUri = process.env.MONGO_URI;
+  console.log("Environment Variables Loaded (check if true):", {
+    userEmail: !!userEmail,
+    appPassword: !!appPassword,
+    mongoUri: !!mongoUri ? mongoUri.substring(0, 30) + "..." : false
+    // Log partial URI for security
+  });
   if (!userEmail || !appPassword || !mongoUri) {
+    console.error("Missing environment variables.");
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Missing environment variables." })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ success: false, error: "Missing environment variables. Please check Netlify settings or local .env." })
     };
   }
   const transporter = nodemailer.createTransport({
@@ -43622,6 +43674,7 @@ exports.handler = async (event) => {
       pass: appPassword
     }
   });
+  console.log("Nodemailer transporter created.");
   const mailOptions = {
     from: `"Portfolio Contact" <${userEmail}>`,
     to: userEmail,
@@ -43634,12 +43687,37 @@ exports.handler = async (event) => {
       <p><strong>Message:</strong><br/>${message}</p>
     `
   };
+  console.log("Mail options configured.");
   const client = new MongoClient(mongoUri);
+  console.log("MongoDB client initialized.");
   try {
+    console.log("Attempting to send email...");
     await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully.");
+    console.log("Attempting to connect to MongoDB...");
     await client.connect();
+    console.log("Connected to MongoDB.");
     const db = client.db("portfolio");
     const collection = db.collection("messages");
+    console.log("MongoDB database and collection selected.");
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1e3);
+    const count = await collection.countDocuments({
+      email,
+      date: { $gte: since }
+    });
+    console.log(`Messages from this email in last 24h: ${count}`);
+    if (count >= 3) {
+      console.log("Rate limit exceeded.");
+      return {
+        statusCode: 429,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          success: false,
+          message: "You can only send 3 messages per 24 hours from this email address. Please try again after 24 hours."
+        })
+      };
+    }
+    console.log("Attempting to save to MongoDB...");
     await collection.insertOne({
       firstName,
       lastName,
@@ -43648,20 +43726,34 @@ exports.handler = async (event) => {
       message,
       date: /* @__PURE__ */ new Date()
     });
+    console.log("Data saved to MongoDB.");
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
-      // 👈 required!
-      body: JSON.stringify({ success: true, message: "Message sent and saved!" })
+      body: JSON.stringify({ success: true, message: "Message sent and saved to DB!" })
+      // Added DB confirmation
     };
   } catch (error) {
-    console.error("\u274C ERROR:", error);
+    console.error("\u274C FUNCTION ERROR:", error);
+    let errorMessage = "An unknown error occurred.";
+    if (error.message) {
+      errorMessage = error.message;
+    } else if (error.response && error.response.body && error.response.body.errors) {
+      errorMessage = error.response.body.errors.map((err) => err.message).join(", ");
+    }
     return {
       statusCode: 500,
-      body: JSON.stringify({ success: false, error: error.message })
+      headers: { "Content-Type": "application/json" },
+      // Ensure headers are always set
+      body: JSON.stringify({ success: false, error: errorMessage, stack: error.stack })
     };
   } finally {
-    await client.close();
+    if (client && client.topology && client.topology.isConnected()) {
+      console.log("Closing MongoDB client connection.");
+      await client.close();
+    } else {
+      console.log("MongoDB client was not connected or already closed.");
+    }
   }
 };
 //# sourceMappingURL=send-email.js.map

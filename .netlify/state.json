@@ -1,20 +1,20 @@
 {
 	"geolocation": {
 		"data": {
-			"city": "New Delhi",
+			"city": "Ahmedabad",
 			"country": {
 				"code": "IN",
 				"name": "India"
 			},
 			"subdivision": {
-				"code": "DL",
-				"name": "National Capital Territory of Delhi"
+				"code": "GJ",
+				"name": "Gujarat"
 			},
 			"timezone": "Asia/Kolkata",
-			"latitude": 28.6327,
-			"longitude": 77.2198,
-			"postalCode": "110002"
+			"latitude": 23.0276,
+			"longitude": 72.5871,
+			"postalCode": "380001"
 		},
-		"timestamp": 1753121337374
+		"timestamp": 1753208695364
 	}
 }
