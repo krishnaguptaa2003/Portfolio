@@ -1,3 +1,4 @@
+import React from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -7,25 +8,29 @@ import Certificates from './components/Certificates';
 // import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import './App.css'
+import './App.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+AOS.init({
+  duration: 1000, // Default animation duration
+  once: true,     // Whether animation should happen only once - true is good for portfolio sections
+});
 
 function App() {
   return (
-    < >
-      <div className="h-auto overflow-y-auto"> {/* <--- THIS IS THE CULPRIT */}
-        <Header />
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Certificates />
-        {/* <Testimonials /> */}
-        <Contact />
-        <Footer />
-      </div>
-
+    <>
+      <Header />
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Certificates />
+      {/* <Testimonials /> */}
+      <Contact />
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

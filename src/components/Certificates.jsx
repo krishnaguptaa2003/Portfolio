@@ -1,100 +1,142 @@
 import React, { useState, useEffect } from "react";
-import { XMarkIcon } from '@heroicons/react/24/solid'; // Import an X icon for closing modal
+import { XMarkIcon } from '@heroicons/react/24/solid';
 
-// Define your certificates data
-// IMPORTANT: Replace '/images/certi.png' with actual, unique certificate image paths.
-// For best performance and SEO, use optimized image files (e.g., compressed JPEGs or WebPs).
-// Ensure these images are in your public/images folder if referenced directly like this.
 const allCertificates = [
-  { id: 1, title: "Infosys – JavaScript", image: "/images/certi.png", alt: "Infosys JavaScript Certificate" },
-  { id: 2, title: "Infosys – React", image: "/images/certi.png", alt: "Infosys React Certificate" },
-  { id: 3, title: "Infosys – HTML & CSS", image: "/images/certi.png", alt: "Infosys HTML & CSS Certificate" },
-  { id: 4, title: "Infosys – UI/UX Basics", image: "/images/certi.png", alt: "Infosys UI/UX Basics Certificate" },
-  { id: 5, title: "Infosys – SQL", image: "/images/certi.png", alt: "Infosys SQL Certificate" },
-  { id: 6, title: "Infosys – Git & GitHub", image: "/images/certi.png", alt: "Infosys Git & GitHub Certificate" },
-  // Add more certificates here if you have them
-  // { id: 7, title: "Another Certificate", image: "/images/another-cert.png", alt: "Another Certificate Description" },
+  { 
+    id: 1, 
+    title: "JavaScript Fundamentals", 
+    issuer: "Infosys Springboard",
+    date: "June 2023",
+    image: "/images/cert-js.png", 
+    alt: "JavaScript Fundamentals Certificate from Infosys",
+    skills: ["ES6 Syntax", "DOM Manipulation", "Async Programming"]
+  },
+  { 
+    id: 2, 
+    title: "React.js Development", 
+    issuer: "Infosys Springboard",
+    date: "July 2023",
+    image: "/images/cert-react.png", 
+    alt: "React.js Development Certificate from Infosys",
+    skills: ["Components", "Hooks", "Context API", "React Router"]
+  },
+  { 
+    id: 3, 
+    title: "HTML & CSS Mastery", 
+    issuer: "Infosys Springboard",
+    date: "May 2023",
+    image: "/images/cert-html-css.png", 
+    alt: "HTML & CSS Certificate from Infosys",
+    skills: ["Semantic HTML", "CSS Grid", "Flexbox", "Responsive Design"]
+  },
+  { 
+    id: 4, 
+    title: "UI/UX Principles", 
+    issuer: "Infosys Springboard",
+    date: "August 2023",
+    image: "/images/cert-uiux.png", 
+    alt: "UI/UX Basics Certificate from Infosys",
+    skills: ["Wireframing", "Prototyping", "User Research", "Figma"]
+  },
+  { 
+    id: 5, 
+    title: "Database Fundamentals", 
+    issuer: "Infosys Springboard",
+    date: "September 2023",
+    image: "/images/cert-sql.png", 
+    alt: "SQL Certificate from Infosys",
+    skills: ["SQL Queries", "Database Design", "Normalization", "Indexing"]
+  },
+  { 
+    id: 6, 
+    title: "Version Control with Git", 
+    issuer: "Infosys Springboard",
+    date: "October 2023",
+    image: "/images/cert-git.png", 
+    alt: "Git & GitHub Certificate from Infosys",
+    skills: ["Branching", "Merging", "GitHub", "Collaborative Workflows"]
+  },
 ];
 
 const Certificates = () => {
-  // State for mod
   const [showModal, setShowModal] = useState(false);
-  const [selectedCertImage, setSelectedCertImage] = useState(null);
-  const [selectedCertTitle, setSelectedCertTitle] = useState("");
+  const [selectedCert, setSelectedCert] = useState(null);
+  const [visibleCertCount, setVisibleCertCount] = useState(3);
 
-  // State for "View All Certificates" functionality
-  const initialCertCount = 3; // Number of certificates to show initially
-  const [visibleCertCount, setVisibleCertCount] = useState(initialCertCount);
-
-  // Function to open the certificate modal
   const openCertificateModal = (cert) => {
-    setSelectedCertImage(cert.image);
-    setSelectedCertTitle(cert.title);
+    setSelectedCert(cert);
     setShowModal(true);
   };
 
-  // Function to close the certificate modal
   const closeCertificateModal = () => {
     setShowModal(false);
-    setSelectedCertImage(null);
-    setSelectedCertTitle("");
+    setTimeout(() => setSelectedCert(null), 300);
   };
 
-  // Function to toggle viewing all certificates
   const toggleViewAllCertificates = () => {
-    if (visibleCertCount === allCertificates.length) {
-      setVisibleCertCount(initialCertCount); // Show initial count
-    } else {
-      setVisibleCertCount(allCertificates.length); // Show all
-    }
+    setVisibleCertCount(prev => 
+      prev === allCertificates.length ? 3 : allCertificates.length
+    );
   };
 
-  // Effect to handle body scroll when modal is open/closed (Accessibility/UX)
   useEffect(() => {
     if (showModal) {
-      document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset'; // Allow scrolling when modal is closed
+      document.body.style.overflow = 'unset';
     }
-    return () => {
-      document.body.style.overflow = 'unset'; // Cleanup on component unmount
-    };
   }, [showModal]);
 
   return (
-    <section id="certificates" className="py-20 bg-[#1a1a2e] text-white px-5 sm:px-10">
+    <section id="certificates" className="py-20 bg-gradient-to-b from-[#0a0e17] to-[#1a1a2e] px-5 sm:px-10">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-12" aria-label="My Certifications and Achievements">Certificates</h2> {/* Added aria-label for SEO/A11y */}
+        <h2 
+          className="text-4xl font-bold text-center mb-16"
+          aria-label="My Certifications and Achievements"
+          style={{
+            animation: 'fadeInUp 0.8s ease-out both',
+            animationDelay: '0.1s'
+          }}
+        >
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            Certifications
+          </span>
+        </h2>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {allCertificates.slice(0, visibleCertCount).map((cert) => ( // Slice to show only visible certificates
+          {allCertificates.slice(0, visibleCertCount).map((cert, index) => (
             <div
-              key={cert.id} // Use unique ID for key
-              className="bg-[#1e1e30] rounded-xl border border-[#2f2f45] shadow-md p-4 hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1" // Added subtle hover effect
-              role="listitem" // Accessibility: indicates this is an item in a list
-              aria-labelledby={`cert-title-${cert.id}`} // Links to the certificate title
+              key={cert.id}
+              className="relative overflow-hidden group bg-[#1e1e30] rounded-xl border border-[#2f2f45] hover:border-blue-400/30 p-6 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
+              style={{
+                animation: 'fadeInUp 0.8s ease-out both',
+                animationDelay: `${0.2 + index * 0.1}s`
+              }}
             >
-              {/* Certificate Image */}
-              <img
-                src={cert.image}
-                alt={cert.alt || cert.title} // Use more specific alt text if available
-                width="400" // Explicit width for CLS prevention (Performance)
-                height="300" // Explicit height for CLS prevention (Performance) - Adjust based on actual image aspect ratio
-                loading="lazy" // Lazy loading for off-screen images (Performance)
-                className="w-full h-auto object-contain rounded-t-lg" // Added mb-3 for spacing
-              />
-
-              {/* Title Bar */}
-              <div className="text-center py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-b-lg mb-4"> {/* Increased mb for button spacing */}
-                <p id={`cert-title-${cert.id}`} className="text-sm font-semibold text-white">{cert.title}</p> {/* Added id for aria-labelledby */}
-              </div>
-
-              {/* CTA Button */}
-              <div className="text-center">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="overflow-hidden rounded-lg mb-4">
+                  <img
+                    src="public\images\certi.png"
+                    alt={cert.alt}
+                    width="400"
+                    height="300"
+                    loading="lazy"
+                    className="w-full h-48 object-contain rounded-lg group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                
+                <div className="mb-3">
+                  <h3 className="text-lg font-semibold text-white group-hover:text-blue-300 transition-colors duration-300">
+                    {cert.title}
+                  </h3>
+                  <p className="text-sm text-gray-300">{cert.issuer}</p>
+                  <p className="text-xs text-gray-400 mt-1">{cert.date}</p>
+                </div>
+                
                 <button
                   onClick={() => openCertificateModal(cert)}
-                  className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-md font-medium transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" // Enhanced animations, focus states
-                  aria-label={`View full certificate for ${cert.title}`} // Accessibility: Describes button purpose
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2 rounded-md transition-all duration-300"
                 >
                   View Certificate
                 </button>
@@ -103,15 +145,18 @@ const Certificates = () => {
           ))}
         </div>
 
-        {/* View All/Show Less Button */}
-        {allCertificates.length > initialCertCount && ( // Only show button if there are more certificates
-          <div className="text-center mt-10">
+        {allCertificates.length > 3 && (
+          <div 
+            className="text-center mt-12"
+            style={{
+              animation: 'fadeInUp 0.8s ease-out both',
+              animationDelay: '0.5s'
+            }}
+          >
             <button
               onClick={toggleViewAllCertificates}
-              className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75" // Enhanced animations, focus states
-              aria-label={visibleCertCount === allCertificates.length ? "Show fewer certificates" : "View all certificates"} // Dynamic aria-label
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-3 rounded-md transition-all duration-300 hover:shadow-lg"
             >
-              {/* PROFESSIONAL CORRECTION FOR BUTTON TEXT BELOW */}
               {visibleCertCount === allCertificates.length ? "Show Less" : "View All Certificates"}
             </button>
           </div>
@@ -119,41 +164,60 @@ const Certificates = () => {
       </div>
 
       {/* Certificate Modal */}
-      {showModal && selectedCertImage && (
-        <div
-          className="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50 p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="cert-modal-title"
-          aria-describedby="cert-modal-description"
+      {showModal && selectedCert && (
+        <div 
+          className={`fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300 ${
+            showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={closeCertificateModal}
         >
-          <div className="relative bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-            {/* Modal Header */}
-            <div className="flex justify-between items-center p-4 bg-gray-100 border-b border-gray-200">
-              <h3 id="cert-modal-title" className="text-xl font-semibold text-gray-800">{selectedCertTitle}</h3>
+          <div 
+            className={`bg-[#1e1e30] rounded-xl shadow-2xl border border-[#2f2f45] max-w-4xl w-full max-h-[90vh] overflow-y-auto transform transition-all duration-300 ${
+              showModal ? 'scale-100' : 'scale-95'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center p-6 border-b border-[#2f2f45]">
+              <div>
+                <h3 className="text-xl font-bold text-white">{selectedCert.title}</h3>
+                <p className="text-gray-300 text-sm">{selectedCert.issuer} • {selectedCert.date}</p>
+              </div>
               <button
                 onClick={closeCertificateModal}
-                className="text-gray-500 hover:text-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75 rounded-full p-1"
-                aria-label="Close certificate view"
+                className="p-1 rounded-full hover:bg-[#2f2f45] text-gray-300"
               >
-                <XMarkIcon className="h-6 w-6" /> {/* Heroicons X icon */}
+                <XMarkIcon className="h-6 w-6" />
               </button>
             </div>
-
-            {/* Modal Body - Image */}
-            <div className="flex-grow overflow-y-auto p-4 flex items-center justify-center">
-              <img
-                src={selectedCertImage}
-                alt={selectedCertTitle}
-                className="max-w-full max-h-full object-contain rounded-lg shadow-md"
-                id="cert-modal-description" // Linked for aria-describedby
-                width="800" // Example width for modal image
-                height="600" // Example height for modal image - adjust based on common cert dimensions
-              />
+            
+            <div className="p-6">
+              <div className="flex justify-center mb-6">
+                <img
+                  src="public\images\certi.png"
+                  alt={selectedCert.alt}
+                  className="max-w-full max-h-[60vh] object-contain rounded-lg"
+                  loading="eager"
+                />
+              </div>
+              
+              <div className="mt-6">
+                <h4 className="font-semibold text-white mb-3">Skills Validated:</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedCert.skills.map((skill, index) => (
+                    <span 
+                      key={index}
+                      className="bg-[#2f2f45] text-blue-300 text-xs px-3 py-1 rounded-full"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
+
     </section>
   );
 };

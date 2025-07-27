@@ -6,62 +6,261 @@
 }
 
 /* ===== Root Layout Fix ===== */
-html,
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   width: 100%;
-  height: 100%;
-  overflow-x: hidden;         /* ✅ Prevent horizontal scroll */
-  scroll-behavior: smooth;
+  min-height: 100vh;
   font-family: 'Inter', sans-serif;
   background-color: #ffffff;
+  padding-top: 60px; /* Match header height */
 }
 
-/* ===== FINAL: Catch overflow from ANYTHING inside body ===== */
-body > * {
-  max-width: 100vw;           /* ✅ Ensure no child element overflows */
-  overflow-x: hidden;
+/* Sticky Header Offset Fix */
+section[id] {
+  scroll-margin-top: 60px; /* Match header height */
 }
 
-/* ===== Container Utility (Optional if using Tailwind’s container) ===== */
-.container {
-  max-width: 1280px;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-left: auto;
-  margin-right: auto;
+/* Header specific styles */
+header.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* ===== Button Styles ===== */
-.btn-primary {
-  background-color: #ff6f00;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
+/* Hero Section Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.btn-primary:hover {
-  background-color: #e85e00;
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* ===== Section Titles ===== */
-.section-title {
-  font-size: 2.25rem;         /* Tailwind’s text-4xl */
-  text-align: center;
-  margin-bottom: 3.5rem;      /* Tailwind’s mb-14 */
-  font-weight: 700;
-  letter-spacing: 0.05em;     /* Tailwind’s tracking-wide */
-  color: #1f2937;             /* Tailwind’s text-gray-900 */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-/* ===== Fade-In Animation ===== */
-.fade-in {
-  animation: fadeIn 1s ease-in-out both;
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
 }
 
-@keyframes fadeIn {
+/* Performance optimizations */
+.hero-animate {
+  will-change: transform, opacity;
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animation performance optimizations */
+.header-animate {
+  will-change: transform, opacity;
+}
+
+/* Custom easing for smooth animations */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile menu backdrop */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    padding-top: 56px; /* Slightly less padding on mobile */
+  }
+  
+  section[id] {
+    scroll-margin-top: 56px;
+  }
+  
+  /* Ensure sections don't have horizontal overflow */
+  section {
+    overflow-x: hidden;
+  }
+}
+
+/* About Section Animations */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Performance optimizations */
+.about-animate {
+  will-change: transform, opacity;
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom list styling */
+.marker-orange::marker {
+  color: #ff6f00;
+}
+
+/* Skills Section Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* Performance optimizations */
+.skills-animate {
+  will-change: transform, opacity;
+}
+
+/* Smooth transitions */
+.transition-skill {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom list styling */
+.marker-orange::marker {
+  color: #ff6f00;
+}
+
+/* Projects Section Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Performance optimizations */
+.projects-animate {
+  will-change: transform, opacity;
+}
+
+/* Smooth transitions */
+.transition-projects {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);

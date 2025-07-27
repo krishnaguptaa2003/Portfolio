@@ -1,7 +1,7 @@
 {
 	"geolocation": {
 		"data": {
-			"city": "Vadodara",
+			"city": "Ahmedabad",
 			"country": {
 				"code": "IN",
 				"name": "India"
@@ -11,10 +11,10 @@
 				"name": "Gujarat"
 			},
 			"timezone": "Asia/Kolkata",
-			"latitude": 22.3008,
-			"longitude": 73.2043,
-			"postalCode": "390001"
+			"latitude": 23.0276,
+			"longitude": 72.5871,
+			"postalCode": "380007"
 		},
-		"timestamp": 1753536325940
+		"timestamp": 1753626853827
 	}
 }
