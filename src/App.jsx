@@ -12,7 +12,7 @@ import './App.css'
 function App() {
   return (
     <>
-      <div>
+      <div className="h-screen overflow-y-auto">
         <Header />
         <Hero />
         <About />

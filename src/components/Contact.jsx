@@ -1,6 +1,6 @@
 // src/components/Contact.jsx
 import React, { useState } from "react";
-import { FaGithub, FaLinkedin, FaEnvelope, FaXTwitter } from "react-icons/fa6";
+import { FaGithub, FaLinkedin, FaEnvelope, FaXTwitter } from "react-icons/fa6"; // Using FaXTwitter for consistency
 
 const Contact = () => {
   const [messageStatus, setMessageStatus] = useState(null); // State to hold success/error message
@@ -24,7 +24,7 @@ const Contact = () => {
 
     // --- Validation ---
     const nameRegex = /^[A-Za-z]{2,30}$/;
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; // Specific to Gmail as per your regex
     const phoneRegex = /^\d{10}$/;
 
     if (!payload.firstName || !nameRegex.test(payload.firstName)) {
@@ -130,36 +130,36 @@ const Contact = () => {
 
             <div className="space-y-2 text-[15px]">
               <p><strong>Email:</strong>{" "}
-                <a href="mailto:krishnagupta.design@gmail.com" className="text-blue-600 hover:underline">
-                  krishnagupta.design@gmail.com
+                <a href="mailto:krishnaguptaa2003@gmail.com" className="text-blue-600 hover:underline" aria-label="Email Krishna Gupta at krishnaguptaa2003@gmail.com">
+                  krishnaguptaa2003@gmail.com
                 </a>
               </p>
-              <p><strong>Phone:</strong> +91 8200021444</p>
+              <p><strong>Phone:</strong> +91 9265709014</p>
               <p><strong>GitHub:</strong>{" "}
-                <a href="https://github.com/krishna-gupta" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
-                  github.com/krishna-gupta
+                <a href="https://github.com/krishnaguptaa2003" target="_blank" rel="noopener noreferrer" aria-label="Visit Krishna Gupta's GitHub profile">
+                  https://github.com/krishnaguptaa2003
                 </a>
               </p>
               <p><strong>LinkedIn:</strong>{" "}
-                <a href="https://linkedin.com/in/krishna-gupta" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
-                  linkedin.com/in/krishna-gupta
+                <a href="https://www.linkedin.com/in/krishnaguptaa2003/" target="_blank" rel="noopener noreferrer" aria-label="Visit Krishna Gupta's LinkedIn profile">
+                  https://www.linkedin.com/in/krishnaguptaa2003/
                 </a>
               </p>
             </div>
 
             {/* SOCIAL ICONS */}
             <div className="flex space-x-5 pt-4 text-2xl">
-              <a href="https://github.com/krishna-gupta" target="_blank" rel="noreferrer">
-                <FaGithub className="text-gray-800 hover:text-black transition duration-300 hover:scale-110" />
+              <a href="https://github.com/krishnaguptaa2003" target="_blank" rel="noopener noreferrer" aria-label="Visit Krishna Gupta's GitHub profile" className="text-gray-800 hover:text-black transition duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75">
+                <FaGithub />
               </a>
-              <a href="https://linkedin.com/in/krishna-gupta" target="_blank" rel="noreferrer">
-                <FaLinkedin className="text-[#0A66C2] hover:text-[#004182] transition duration-300 hover:scale-110" />
+              <a href="https://www.linkedin.com/in/krishnaguptaa2003/" target="_blank" rel="noopener noreferrer" aria-label="Visit Krishna Gupta's LinkedIn profile" className="text-[#0A66C2] hover:text-[#004182] transition duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                <FaLinkedin />
               </a>
-              <a href="mailto:krishnagupta.design@gmail.com" target="_blank" rel="noreferrer">
-                <FaEnvelope className="text-[#D44638] hover:text-red-600 transition duration-300 hover:scale-110" />
+              <a href="mailto:krishnaguptaa2003@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Send an email to Krishna Gupta" className="text-[#D44638] hover:text-red-600 transition duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75">
+                <FaEnvelope />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer">
-                <FaXTwitter className="text-black hover:text-gray-800 transition duration-300 hover:scale-110" />
+              <a href="https://x.com/MRKRISHNA_75" target="_blank" rel="noopener noreferrer" aria-label="Visit Krishna Gupta's X (Twitter) profile" className="text-black hover:text-gray-800 transition duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75">
+                <FaXTwitter />
               </a>
             </div>
           </div>
@@ -175,37 +175,47 @@ const Contact = () => {
               <input
                 type="text"
                 name="firstName"
+                id="firstName" // Added id for label association
                 placeholder="First Name"
                 required
                 className="px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                aria-label="First Name" // For accessibility
               />
               <input
                 type="text"
                 name="lastName"
+                id="lastName" // Added id for label association
                 placeholder="Last Name"
                 required
                 className="px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                aria-label="Last Name" // For accessibility
               />
             </div>
             <input
               type="email"
               name="email"
+              id="email" // Added id for label association
               placeholder="Email"
               required
               className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+              aria-label="Email Address" // For accessibility
             />
             <input
               type="tel"
               name="phone"
+              id="phone" // Added id for label association
               placeholder="Phone (Optional)"
               className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+              aria-label="Phone Number (Optional)" // For accessibility
             />
             <textarea
               name="message"
+              id="message" // Added id for label association
               placeholder="Your Message"
               rows="4"
               required
               className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+              aria-label="Your Message" // For accessibility
             ></textarea>
 
             <div className="flex items-start gap-2 text-sm text-gray-600">
@@ -215,8 +225,9 @@ const Contact = () => {
 
             <button
               type="submit"
-              className={`w-full bg-[#ff6f00] text-white font-semibold py-2 rounded-md transition duration-300 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e65c00]'}`}
+              className={`w-full bg-[#ff6f00] text-white font-semibold py-2 rounded-md transition duration-300 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e65c00]'} focus:outline-none focus:ring-2 focus:ring-[#ff6f00] focus:ring-opacity-75`} // Added focus states
               disabled={isSubmitting}
+              aria-label={isSubmitting ? 'Sending message...' : 'Send Message'} // Dynamic aria-label
             >
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
@@ -226,21 +237,27 @@ const Contact = () => {
 
       {/* Custom Modal for Feedback */}
       {showModal && messageStatus && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
+        <div
+          className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4" // Added p-4 for consistent padding from viewport edges
+          role="dialog" // Accessibility: Defines the element as a dialog
+          aria-modal="true" // Accessibility: Indicates that the dialog is modal
+          aria-labelledby="modal-title" // Links to the modal's title
+          aria-describedby="modal-description" // Links to the modal's message
+        >
           <div className={`bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center ${
             messageStatus.type === 'success' ? 'border-t-4 border-green-500' : 'border-t-4 border-red-500'
           }`}>
-            <h3 className={`text-xl font-semibold mb-4 ${
+            <h3 id="modal-title" className={`text-xl font-semibold mb-4 ${ // Added id for aria-labelledby
               messageStatus.type === 'success' ? 'text-green-700' : 'text-red-700'
             }`}>
               {messageStatus.type === 'success' ? 'Success!' : 'Error!'}
             </h3>
-            <p className="text-gray-700 mb-6">{messageStatus.text}</p>
+            <p id="modal-description" className="text-gray-700 mb-6">{messageStatus.text}</p> {/* Added id for aria-describedby */}
             <button
               onClick={() => setShowModal(false)}
               className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${
                 messageStatus.type === 'success' ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'
-              }`}
+              } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75`} // Added focus states
             >
               OK
             </button>

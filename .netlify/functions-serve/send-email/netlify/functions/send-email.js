@@ -43675,25 +43675,9 @@ exports.handler = async (event) => {
     }
   });
   console.log("Nodemailer transporter created.");
-  const mailOptions = {
-    from: `"Portfolio Contact" <${userEmail}>`,
-    to: userEmail,
-    subject: "New Contact Form Submission",
-    html: `
-      <h2>New Message from Portfolio</h2>
-      <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone || "Not Provided"}</p>
-      <p><strong>Message:</strong><br/>${message}</p>
-    `
-  };
-  console.log("Mail options configured.");
   const client = new MongoClient(mongoUri);
   console.log("MongoDB client initialized.");
   try {
-    console.log("Attempting to send email...");
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully.");
     console.log("Attempting to connect to MongoDB...");
     await client.connect();
     console.log("Connected to MongoDB.");
@@ -43707,7 +43691,7 @@ exports.handler = async (event) => {
     });
     console.log(`Messages from this email in last 24h: ${count}`);
     if (count >= 3) {
-      console.log("Rate limit exceeded.");
+      console.log("Rate limit exceeded. No email will be sent, and data will not be saved.");
       return {
         statusCode: 429,
         headers: { "Content-Type": "application/json" },
@@ -43717,6 +43701,21 @@ exports.handler = async (event) => {
         })
       };
     }
+    const mailOptions = {
+      from: `"Portfolio Contact" <${userEmail}>`,
+      to: userEmail,
+      subject: "New Contact Form Submission",
+      html: `
+        <h2>New Message from Portfolio</h2>
+        <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || "Not Provided"}</p>
+        <p><strong>Message:</strong><br/>${message}</p>
+      `
+    };
+    console.log("Attempting to send regular email...");
+    await transporter.sendMail(mailOptions);
+    console.log("Regular email sent successfully.");
     console.log("Attempting to save to MongoDB...");
     await collection.insertOne({
       firstName,
@@ -43731,7 +43730,6 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: true, message: "Message sent and saved to DB!" })
-      // Added DB confirmation
     };
   } catch (error) {
     console.error("\u274C FUNCTION ERROR:", error);
@@ -43744,7 +43742,6 @@ exports.handler = async (event) => {
     return {
       statusCode: 500,
       headers: { "Content-Type": "application/json" },
-      // Ensure headers are always set
       body: JSON.stringify({ success: false, error: errorMessage, stack: error.stack })
     };
   } finally {

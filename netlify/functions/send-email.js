@@ -59,29 +59,11 @@ exports.handler = async (event) => {
   });
   console.log("Nodemailer transporter created.");
 
-  const mailOptions = {
-    from: `"Portfolio Contact" <${userEmail}>`,
-    to: userEmail,
-    subject: "New Contact Form Submission",
-    html: `
-      <h2>New Message from Portfolio</h2>
-      <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone || "Not Provided"}</p>
-      <p><strong>Message:</strong><br/>${message}</p>
-    `,
-  };
-  console.log("Mail options configured.");
-
   // Corrected: Use 'mongoUri' variable here
   const client = new MongoClient(mongoUri);
   console.log("MongoDB client initialized.");
 
   try {
-    console.log("Attempting to send email...");
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully.");
-
     console.log("Attempting to connect to MongoDB...");
     await client.connect();
     console.log("Connected to MongoDB.");
@@ -90,7 +72,7 @@ exports.handler = async (event) => {
     const collection = db.collection("messages");
     console.log("MongoDB database and collection selected.");
 
-    // Rate limit logic
+    // Rate limit logic: Check count BEFORE sending ANY email or saving data
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const count = await collection.countDocuments({
       email: email,
@@ -99,7 +81,8 @@ exports.handler = async (event) => {
     console.log(`Messages from this email in last 24h: ${count}`);
 
     if (count >= 3) {
-      console.log("Rate limit exceeded.");
+      console.log("Rate limit exceeded. No email will be sent, and data will not be saved.");
+      // No email sent to you, no data saved to DB.
       return {
         statusCode: 429,
         headers: { "Content-Type": "application/json" },
@@ -109,6 +92,23 @@ exports.handler = async (event) => {
         }),
       };
     }
+
+    // If rate limit NOT exceeded, proceed with regular email and data save
+    const mailOptions = {
+      from: `"Portfolio Contact" <${userEmail}>`,
+      to: userEmail,
+      subject: "New Contact Form Submission",
+      html: `
+        <h2>New Message from Portfolio</h2>
+        <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || "Not Provided"}</p>
+        <p><strong>Message:</strong><br/>${message}</p>
+      `,
+    };
+    console.log("Attempting to send regular email...");
+    await transporter.sendMail(mailOptions);
+    console.log("Regular email sent successfully.");
 
     console.log("Attempting to save to MongoDB...");
     await collection.insertOne({
@@ -124,7 +124,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ success: true, message: "Message sent and saved to DB!" }), // Added DB confirmation
+      body: JSON.stringify({ success: true, message: "Message sent and saved to DB!" }),
     };
 
   } catch (error) {
@@ -133,17 +133,15 @@ exports.handler = async (event) => {
     if (error.message) {
         errorMessage = error.message;
     } else if (error.response && error.response.body && error.response.body.errors) {
-        // For specific Nodemailer errors
         errorMessage = error.response.body.errors.map(err => err.message).join(', ');
     }
 
     return {
       statusCode: 500,
-      headers: { "Content-Type": "application/json" }, // Ensure headers are always set
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: false, error: errorMessage, stack: error.stack }),
     };
   } finally {
-    // Ensure client is closed even if there's an error
     if (client && client.topology && client.topology.isConnected()) {
       console.log("Closing MongoDB client connection.");
       await client.close();

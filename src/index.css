@@ -1,24 +1,28 @@
-/* src/index.css */
-
-/* UNIVERSAL RESET */
+/* ===== Universal Reset ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* BASE HTML + BODY */
+/* ===== Root Layout Fix ===== */
 html,
 body {
   width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  height: 100%;
+  overflow-x: hidden;         /* ✅ Prevent horizontal scroll */
   scroll-behavior: smooth;
   font-family: 'Inter', sans-serif;
+  background-color: #ffffff;
 }
 
-/* GLOBAL CONTAINER CLASS */
+/* ===== FINAL: Catch overflow from ANYTHING inside body ===== */
+body > * {
+  max-width: 100vw;           /* ✅ Ensure no child element overflows */
+  overflow-x: hidden;
+}
+
+/* ===== Container Utility (Optional if using Tailwind’s container) ===== */
 .container {
   max-width: 1280px;
   padding-left: 1rem;
@@ -27,28 +31,34 @@ body {
   margin-right: auto;
 }
 
-/* BUTTON STYLES */
+/* ===== Button Styles ===== */
 .btn-primary {
   background-color: #ff6f00;
   color: white;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   border-radius: 0.5rem;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
   background-color: #e85e00;
 }
 
-/* HEADING UTILITIES */
+/* ===== Section Titles ===== */
 .section-title {
-  @apply text-4xl md:text-5xl font-bold text-center mb-14 tracking-wide text-gray-900;
+  font-size: 2.25rem;         /* Tailwind’s text-4xl */
+  text-align: center;
+  margin-bottom: 3.5rem;      /* Tailwind’s mb-14 */
+  font-weight: 700;
+  letter-spacing: 0.05em;     /* Tailwind’s tracking-wide */
+  color: #1f2937;             /* Tailwind’s text-gray-900 */
 }
 
-/* ANIMATIONS */
+/* ===== Fade-In Animation ===== */
 .fade-in {
-  animation: fadeIn 1s ease-in both;
+  animation: fadeIn 1s ease-in-out both;
 }
 
 @keyframes fadeIn {
