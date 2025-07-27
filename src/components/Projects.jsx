@@ -12,7 +12,7 @@ const allProjects = [
     id: 1,
     title: "EduTech",
     description: "A donation-based learning platform offering free courses, secure donor tracking, and AI-based enhancements.",
-    image: "/images/project1.png", // Placeholder - replace with actual screenshot
+    image: "/images/project1.png", // This specific image path will now be overridden by the generic one
     alt: "Screenshot of EduTech learning platform",
     liveLink: "https://edutech-demo.netlify.app", // Replace with actual live link
     githubLink: "https://github.com/krishnaguptaa2003/EduTech-repo", // Replace with actual GitHub link
@@ -21,7 +21,7 @@ const allProjects = [
     id: 2,
     title: "Scrpcy Dashboard",
     description: "A smart internal network app using React and .NET for seamless management of employee data.",
-    image: "/images/project2.png", // Placeholder - replace with actual screenshot
+    image: "/images/project2.png", // This specific image path will now be overridden by the generic one
     alt: "Screenshot of Scrpcy Dashboard employee management system",
     liveLink: "https://scrpcy-dashboard.netlify.app", // Replace with actual live link
     githubLink: "https://github.com/krishnaguptaa2003/Scrpcy-Dashboard-repo", // Replace with actual GitHub link
@@ -30,7 +30,7 @@ const allProjects = [
     id: 3,
     title: "Hospital Management",
     description: "Desktop-style system to manage hospital workflows and patient records with .NET backend and SQL.",
-    image: "/images/project3.png", // Placeholder - replace with actual screenshot
+    image: "/images/project3.png", // This specific image path will now be overridden by the generic one
     alt: "Screenshot of Hospital Management System",
     liveLink: "https://hospital-mgmt-demo.netlify.app", // Replace with actual live link
     githubLink: "https://github.com/krishnaguptaa2003/Hospital-Management-repo", // Replace with actual GitHub link
@@ -39,7 +39,7 @@ const allProjects = [
     id: 4,
     title: "Portfolio Website",
     description: "Modern personal portfolio using React and Tailwind, fully responsive and Figma-aligned. This is the site you are currently viewing!",
-    image: "/images/project4.png", // Placeholder - replace with actual screenshot
+    image: "/images/project4.png", // This specific image path will now be overridden by the generic one
     alt: "Screenshot of Krishna Gupta's Portfolio Website",
     liveLink: "https://krishnaguptaportfolio.netlify.app", // This site's live link
     githubLink: "https://github.com/krishnaguptaa2003/Portfolio", // This site's GitHub link
@@ -48,7 +48,7 @@ const allProjects = [
     id: 5,
     title: "Quiz App",
     description: "A dynamic quiz application with real-time score, built using React.js and Firebase.",
-    image: "/images/project5.png", // Placeholder - replace with actual screenshot
+    image: "/images/project5.png", // This specific image path will now be overridden by the generic one
     alt: "Screenshot of Quiz Application",
     liveLink: "https://quiz-app-demo.netlify.app", // Replace with actual live link
     githubLink: "https://github.com/krishnaguptaa2003/Quiz-App-repo", // Replace with actual GitHub link
@@ -57,7 +57,7 @@ const allProjects = [
     id: 6,
     title: "Employee Calibration",
     description: "Internal tool for HR to manage employee performance scores, built with .NET and React.",
-    image: "/images/project6.png", // Placeholder - replace with actual screenshot
+    image: "/images/project6.png", // This specific image path will now be overridden by the generic one
     alt: "Screenshot of Employee Calibration Tool",
     liveLink: "https://employee-calibration-demo.netlify.app", // Replace with actual live link
     githubLink: "https://github.com/krishnaguptaa2003/Employee-Calibration-repo", // Replace with actual GitHub link
@@ -120,7 +120,8 @@ const Projects = () => {
               aria-labelledby={`project-title-${project.id}`}
             >
               <img
-                src="public\images\project.jpg"
+                // Always use the generic project.jpg for card thumbnails
+                src="/images/project.jpg" 
                 alt={project.alt || project.title}
                 width="400"
                 height="240"
@@ -180,7 +181,7 @@ const Projects = () => {
         )}
       </div>
 
-      {/* Project Details Modal (remains the same as before) */}
+      {/* Project Details Modal */}
       {showProjectModal && selectedProject && (
         <div
           className="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50 p-4"
@@ -205,7 +206,8 @@ const Projects = () => {
             {/* Modal Body - Image and Description */}
             <div className="flex-grow overflow-y-auto p-4">
               <img
-                src={selectedProject.image}
+                // Always use the generic project.jpg for modal images
+                src="/images/project.jpg" 
                 alt={selectedProject.alt || selectedProject.title}
                 className="w-full h-auto object-cover rounded-lg shadow-md mb-4"
                 width="800" // Example width for modal image
