@@ -11,8 +11,8 @@ import './App.css'
 
 function App() {
   return (
-    <>
-      <div className="h-screen overflow-y-auto">
+    < >
+      <div className="h-auto overflow-y-auto"> {/* <--- THIS IS THE CULPRIT */}
         <Header />
         <Hero />
         <About />
@@ -23,7 +23,7 @@ function App() {
         <Contact />
         <Footer />
       </div>
-      
+
     </>
   )
 }

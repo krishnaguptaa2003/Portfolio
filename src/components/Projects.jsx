@@ -120,7 +120,7 @@ const Projects = () => {
               aria-labelledby={`project-title-${project.id}`}
             >
               <img
-                src={project.image}
+                src="public\images\project.jpg"
                 alt={project.alt || project.title}
                 width="400"
                 height="240"
