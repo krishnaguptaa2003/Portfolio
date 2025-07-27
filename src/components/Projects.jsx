@@ -108,7 +108,7 @@ const Projects = () => {
               className="bg-white rounded-xl border border-gray-200 shadow-md p-6 hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1 flex flex-col"
             >
               <img
-                src="public\images\project.jpg"
+                src="/images/project.jpg"
                 alt={project.alt}
                 width="400"
                 height="240"
@@ -216,7 +216,7 @@ const Projects = () => {
             
             <div className="p-6">
               <img
-                src="public\images\project.jpg"
+                src="/images/project.jpg"
                 alt={selectedProject.alt}
                 className="w-full h-auto rounded-lg mb-6"
                 loading="lazy"

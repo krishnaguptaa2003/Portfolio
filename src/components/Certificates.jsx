@@ -117,7 +117,7 @@ const Certificates = () => {
               <div className="relative z-10">
                 <div className="overflow-hidden rounded-lg mb-4">
                   <img
-                    src="public\images\certi.png"
+                    src="/images/certi.png"
                     alt={cert.alt}
                     width="400"
                     height="300"
@@ -193,7 +193,7 @@ const Certificates = () => {
             <div className="p-6">
               <div className="flex justify-center mb-6">
                 <img
-                  src="public\images\certi.png"
+                  src="/images/certi.png"
                   alt={selectedCert.alt}
                   className="max-w-full max-h-[60vh] object-contain rounded-lg"
                   loading="eager"
