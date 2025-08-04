@@ -15,11 +15,12 @@ const allProjects = [
   },
   {
     id: 2,
-    title: "Scrpcy Dashboard",
+    title: "Network Dashboard",
     description: "A smart internal network app using React and .NET for seamless management of employee data.",
     image: "/images/project2.png",
     alt: "Screenshot of Scrpcy Dashboard employee management system",
-    githubLink: "https://github.com/krishnaguptaa2003/Scrpcy-Dashboard-repo",
+    liveLink: "https://networkdash.netlify.app/",
+    githubLink: "https://github.com/krishnaguptaa2003/networkdash",
     comingSoon: true,
     technologies: ["React.js", ".NET Core", "SQL Server", "JWT Authentication"]
   },

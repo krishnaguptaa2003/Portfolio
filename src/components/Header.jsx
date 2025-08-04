@@ -22,7 +22,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm h-[60px] border-b border-gray-100 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]">
+    <header className="fixed top-0 left-0 right-0 z-50 px-5 bg-white/80 backdrop-blur-sm shadow-sm h-[60px] border-b border-gray-100 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]">
       {/* Removed px-4 sm:px-6 lg:px-8 from here */}
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between">
         {/* Logo Section */}
@@ -71,7 +71,7 @@ const Header = () => {
         {/* Mobile Menu Toggle */}
         <button
           onClick={toggleMenu}
-          className="min-[860px]:hidden text-gray-700 p-1.5 rounded-md transition-all duration-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
+          className="min-[860px]:hidden text-gray-700 rounded-md transition-all duration-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75"
           aria-label={menuOpen ? "Close Menu" : "Open Menu"}
           aria-expanded={menuOpen}
         >
