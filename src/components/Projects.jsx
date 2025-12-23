@@ -30,7 +30,7 @@ const allProjects = [
     description: "Desktop-style system to manage hospital workflows and patient records with .NET backend and SQL.",
     image: "/images/project3.png",
     alt: "Screenshot of Hospital Management System",
-    githubLink: "https://github.com/krishnaguptaa2003/Hospital-Management-repo",
+    githubLink: "https://github.com/krishnaguptaa2003/Hostel-Management",
     comingSoon: true,
     technologies: [".NET", "SQL Server", "Windows Forms", "Entity Framework"]
   },
@@ -50,8 +50,8 @@ const allProjects = [
     description: "A dynamic quiz application with real-time score, built using React.js and Firebase.",
     image: "/images/project5.png",
     alt: "Screenshot of Quiz Application",
-    liveLink: "https://quiz-app-demo.netlify.app",
-    githubLink: "https://github.com/krishnaguptaa2003/Quiz-App-repo",
+    liveLink: "https://knowledge-scape.vercel.app/",
+    githubLink: "https://github.com/krishnaguptaa2003/KnowledgeScape",
     technologies: ["React.js", "Firebase", "Real-time Database", "Firebase Auth"]
   },
   {

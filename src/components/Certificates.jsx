@@ -1,61 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { XMarkIcon } from '@heroicons/react/24/solid';
 
 const allCertificates = [
   { 
     id: 1, 
-    title: "JavaScript Fundamentals", 
+    title: "JavaScript",
     issuer: "Infosys Springboard",
-    date: "June 2023",
-    image: "/images/cert-js.png", 
-    alt: "JavaScript Fundamentals Certificate from Infosys",
-    skills: ["ES6 Syntax", "DOM Manipulation", "Async Programming"]
+    date: "Tuesday, January 17th 2023",
+    image: "/images/Certificates/JavaScript.jpg",
+    alt: "JavaScript Course Completion Certificate from Infosys Springboard",
+    skills: ["Fundamentals", "Functions", "Objects", "Arrays", "DOM Manipulation"]
   },
   { 
     id: 2, 
-    title: "React.js Development", 
+    title: "Java Language Features",
     issuer: "Infosys Springboard",
-    date: "July 2023",
-    image: "/images/cert-react.png", 
-    alt: "React.js Development Certificate from Infosys",
-    skills: ["Components", "Hooks", "Context API", "React Router"]
+    date: "Thursday, March 2nd 2023",
+    image: "/images/Certificates/Java Language Features.jpg",
+    alt: "Java Language Features Course Completion Certificate from Infosys Springboard",
+    skills: ["Core Java Concepts", "Data Types", "Control Flow", "Object-Oriented Programming (OOP)"]
   },
   { 
     id: 3, 
-    title: "HTML & CSS Mastery", 
-    issuer: "Infosys Springboard",
-    date: "May 2023",
-    image: "/images/cert-html-css.png", 
-    alt: "HTML & CSS Certificate from Infosys",
-    skills: ["Semantic HTML", "CSS Grid", "Flexbox", "Responsive Design"]
+    title: "Data Structures in C", 
+    issuer: "Great Learning Academy",
+    date: "December 2022",
+    image: "/images/Certificates/Data Structures in C.jpg",
+    alt: "Data Structures in C Certificate from Great Learning Academy",
+    skills: ["Pointers", "Arrays", "Linked Lists", "Stacks", "Queues", "Binary Trees"]
   },
   { 
     id: 4, 
-    title: "UI/UX Principles", 
+    title: "CSS3", 
     issuer: "Infosys Springboard",
-    date: "August 2023",
-    image: "/images/cert-uiux.png", 
-    alt: "UI/UX Basics Certificate from Infosys",
-    skills: ["Wireframing", "Prototyping", "User Research", "Figma"]
+    date: "Tuesday, January 17th 2023",
+    image: "/images/Certificates/CSS3.jpg",
+    alt: "CSS3 Course Completion Certificate from Infosys Springboard",
+    skills: ["Advanced Selectors", "Flexbox", "Grid Layout", "Animations", "Responsive Design"]
   },
   { 
-    id: 5, 
-    title: "Database Fundamentals", 
+    id: 5,
+    title: "HTML5 - The Language",
     issuer: "Infosys Springboard",
-    date: "September 2023",
-    image: "/images/cert-sql.png", 
-    alt: "SQL Certificate from Infosys",
-    skills: ["SQL Queries", "Database Design", "Normalization", "Indexing"]
+    date: "Tuesday, January 17th 2023",
+    image: "/images/Certificates/HTML5 - The Language.jpg",
+    alt: "HTML5 Course Completion Certificate from Infosys Springboard",
+    skills: ["Semantic HTML5", "Multimedia Elements", "Forms and Input Types", "APIs"]
   },
   { 
     id: 6, 
-    title: "Version Control with Git", 
-    issuer: "Infosys Springboard",
-    date: "October 2023",
-    image: "/images/cert-git.png", 
-    alt: "Git & GitHub Certificate from Infosys",
-    skills: ["Branching", "Merging", "GitHub", "Collaborative Workflows"]
+    title: "CSS", 
+    issuer: "SoloLearn",
+    date: "18 June, 2022",
+    image: "/images/Certificates/CSS.jpg",
+    alt: "CSS Course Certificate from SoloLearn",
+    skills: ["Styling", "Cascading", "Box Model", "Selectors", "Layout"]
   },
+  {
+    id: 7,
+    title: "HTML",
+    issuer: "SoloLearn",
+    date: "18 June, 2022",
+    image: "/images/Certificates/HTML.jpg",
+    alt: "HTML Course Certificate from SoloLearn",
+    skills: ["Structure", "Tags", "Attributes", "Lists", "Tables"]
+  }
 ];
 
 const Certificates = () => {
@@ -70,7 +79,6 @@ const Certificates = () => {
 
   const closeCertificateModal = () => {
     setShowModal(false);
-    setTimeout(() => setSelectedCert(null), 300);
   };
 
   const toggleViewAllCertificates = () => {
@@ -78,14 +86,6 @@ const Certificates = () => {
       prev === allCertificates.length ? 3 : allCertificates.length
     );
   };
-
-  useEffect(() => {
-    if (showModal) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [showModal]);
 
   return (
     <section id="certificates" className="py-20 bg-gradient-to-b from-[#0a0e17] to-[#1a1a2e] px-5 sm:px-10">
@@ -115,14 +115,14 @@ const Certificates = () => {
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="overflow-hidden rounded-lg mb-4">
+                <div className="overflow-hidden rounded-lg mb-4 bg-gray-800 h-48">
                   <img
-                    src="/images/certi.png"
+                    src={cert.image}
                     alt={cert.alt}
                     width="400"
                     height="300"
                     loading="lazy"
-                    className="w-full h-48 object-contain rounded-lg group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 
@@ -166,15 +166,11 @@ const Certificates = () => {
       {/* Certificate Modal */}
       {showModal && selectedCert && (
         <div 
-          className={`fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300 ${
-            showModal ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={closeCertificateModal}
         >
           <div 
-            className={`bg-[#1e1e30] rounded-xl shadow-2xl border border-[#2f2f45] max-w-4xl w-full max-h-[90vh] overflow-y-auto transform transition-all duration-300 ${
-              showModal ? 'scale-100' : 'scale-95'
-            }`}
+            className="bg-[#1e1e30] rounded-xl shadow-2xl border border-[#2f2f45] max-w-4xl w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center p-6 border-b border-[#2f2f45]">
@@ -193,10 +189,9 @@ const Certificates = () => {
             <div className="p-6">
               <div className="flex justify-center mb-6">
                 <img
-                  src="/images/certi.png"
+                  src={selectedCert.image}
                   alt={selectedCert.alt}
-                  className="max-w-full max-h-[60vh] object-contain rounded-lg"
-                  loading="eager"
+                  className="w-full h-auto max-h-[70vh] object-contain rounded-lg"
                 />
               </div>
               
@@ -217,7 +212,6 @@ const Certificates = () => {
           </div>
         </div>
       )}
-
     </section>
   );
 };

@@ -12,9 +12,9 @@ const Hero = () => {
 
   return (
     <section
-      id="home"
-      className="w-full min-h-screen px-5 bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white relative overflow-hidden overflow-x-hidden"
-    >
+  id="home"
+  className="w-full min-h-screen px-4 xs:px-5 bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white relative overflow-hidden hero-section"
+>
       {/* Animated background elements (re-added as per your previous code) */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(5)].map((_, i) => (

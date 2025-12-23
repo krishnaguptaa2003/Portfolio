@@ -8,6 +8,7 @@ import Certificates from './components/Certificates';
 // import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop'; // Add this import
 import './App.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -29,8 +30,9 @@ function App() {
       {/* <Testimonials /> */}
       <Contact />
       <Footer />
+      <ScrollToTop /> {/* Add this component */}
     </>
-  );
+  );  
 }
 
 export default App;

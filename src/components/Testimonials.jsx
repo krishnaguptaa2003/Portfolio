@@ -20,7 +20,7 @@ const testimonials = [
     stars: 4,
   },
   {
-    id: 3, // Added unique ID
+    id: 3, // Added unique ID 
     feedback: "Amazing communicator and designer. Delivered the work ahead of deadline with clarity.",
     name: "Ravi Mehta",
     role: "Sr. Dev",
