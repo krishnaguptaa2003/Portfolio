@@ -21,7 +21,6 @@ const allProjects = [
     alt: "Screenshot of Scrpcy Dashboard employee management system",
     liveLink: "https://networkdash.netlify.app/",
     githubLink: "https://github.com/krishnaguptaa2003/networkdash",
-    comingSoon: true,
     technologies: ["React.js", ".NET Core", "SQL Server", "JWT Authentication"]
   },
   {
@@ -31,7 +30,6 @@ const allProjects = [
     image: "/images/project3.png",
     alt: "Screenshot of Hospital Management System",
     githubLink: "https://github.com/krishnaguptaa2003/Hostel-Management",
-    comingSoon: true,
     technologies: [".NET", "SQL Server", "Windows Forms", "Entity Framework"]
   },
   {
@@ -46,7 +44,7 @@ const allProjects = [
   },
   {
     id: 5,
-    title: "Quiz App",
+    title: "KnowledgeScape",
     description: "A dynamic quiz application with real-time score, built using React.js and Firebase.",
     image: "/images/project5.png",
     alt: "Screenshot of Quiz Application",
@@ -61,7 +59,6 @@ const allProjects = [
     image: "/images/project6.png",
     alt: "Screenshot of Employee Calibration Tool",
     githubLink: "https://github.com/krishnaguptaa2003/Employee-Calibration-repo",
-    comingSoon: true,
     technologies: [".NET", "React.js", "Chart.js", "REST API"]
   },
 ];
