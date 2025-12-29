@@ -1,3 +1,4 @@
+// src\components\Projects.jsx
 import React, { useState, useEffect } from "react";
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { ArrowTopRightOnSquareIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
@@ -5,16 +6,26 @@ import { ArrowTopRightOnSquareIcon, CodeBracketIcon } from '@heroicons/react/24/
 const allProjects = [
   {
     id: 1,
-    title: "EduTech",
-    description: "A donation-based learning platform offering free courses, secure donor tracking, and AI-based enhancements.",
-    image: "/images/project1.png",
-    alt: "Screenshot of EduTech learning platform",
-    githubLink: "https://github.com/krishnaguptaa2003/EduTech-repo",
-    comingSoon: true,
-    technologies: ["React.js", "Node.js", "MongoDB", "Payment Gateway Integration"]
+    title: "Academex",
+    description: "A comprehensive learning platform featuring interactive courses, progress tracking, and student management system.",
+    image: "/images/project6.png",
+    alt: "Screenshot of Academex Learning Platform",
+    liveLink: "https://academe-x.vercel.app/",
+    githubLink: "https://github.com/krishnaguptaa2003/Employee-Calibration-repo",
+    technologies: ["React.js", "Node.js", "MongoDB", "Tailwind CSS", "JWT Authentication"]
   },
   {
     id: 2,
+    title: "KnowledgeScape",
+    description: "A dynamic quiz application with real-time score, built using React.js and Firebase.",
+    image: "/images/project5.png",
+    alt: "Screenshot of Quiz Application",
+    liveLink: "https://knowledge-scape.vercel.app/",
+    githubLink: "https://github.com/krishnaguptaa2003/KnowledgeScape",
+    technologies: ["React.js", "Firebase", "Real-time Database", "Firebase Auth"]
+  },
+  {
+    id: 3,
     title: "Network Dashboard",
     description: "A smart internal network app using React and .NET for seamless management of employee data.",
     image: "/images/project2.png",
@@ -22,15 +33,6 @@ const allProjects = [
     liveLink: "https://networkdash.netlify.app/",
     githubLink: "https://github.com/krishnaguptaa2003/networkdash",
     technologies: ["React.js", ".NET Core", "SQL Server", "JWT Authentication"]
-  },
-  {
-    id: 3,
-    title: "Hospital Management",
-    description: "Desktop-style system to manage hospital workflows and patient records with .NET backend and SQL.",
-    image: "/images/project3.png",
-    alt: "Screenshot of Hospital Management System",
-    githubLink: "https://github.com/krishnaguptaa2003/Hostel-Management",
-    technologies: [".NET", "SQL Server", "Windows Forms", "Entity Framework"]
   },
   {
     id: 4,
@@ -44,22 +46,22 @@ const allProjects = [
   },
   {
     id: 5,
-    title: "KnowledgeScape",
-    description: "A dynamic quiz application with real-time score, built using React.js and Firebase.",
-    image: "/images/project5.png",
-    alt: "Screenshot of Quiz Application",
-    liveLink: "https://knowledge-scape.vercel.app/",
-    githubLink: "https://github.com/krishnaguptaa2003/KnowledgeScape",
-    technologies: ["React.js", "Firebase", "Real-time Database", "Firebase Auth"]
+    title: "Hospital Management",
+    description: "Desktop-style system to manage hospital workflows and patient records with .NET backend and SQL.",
+    image: "/images/project3.png",
+    alt: "Screenshot of Hospital Management System",
+    githubLink: "https://github.com/krishnaguptaa2003/Hostel-Management",
+    technologies: [".NET", "SQL Server", "Windows Forms", "Entity Framework"]
   },
   {
     id: 6,
-    title: "Employee Calibration",
-    description: "Internal tool for HR to manage employee performance scores, built with .NET and React.",
-    image: "/images/project6.png",
-    alt: "Screenshot of Employee Calibration Tool",
-    githubLink: "https://github.com/krishnaguptaa2003/Employee-Calibration-repo",
-    technologies: [".NET", "React.js", "Chart.js", "REST API"]
+    title: "EduTech",
+    description: "A donation-based learning platform offering free courses, secure donor tracking, and AI-based enhancements.",
+    image: "/images/project1.png",
+    alt: "Screenshot of EduTech learning platform",
+    githubLink: "https://github.com/krishnaguptaa2003/EduTech-repo",
+    comingSoon: true,
+    technologies: ["React.js", "Node.js", "MongoDB", "Payment Gateway Integration"]
   },
 ];
 
@@ -140,13 +142,21 @@ const Projects = () => {
                     <ArrowTopRightOnSquareIcon className="h-4 w-4 mr-2" />
                     link
                   </a>
-                ) : (
+                ) : project.comingSoon ? (
                   <button
                     className="flex-1 flex items-center justify-center bg-gray-200 text-gray-600 text-sm px-4 py-2 rounded-md cursor-not-allowed"
                     disabled
                   >
                     <ArrowTopRightOnSquareIcon className="h-4 w-4 mr-2" />
                     Demo Soon
+                  </button>
+                ) : (
+                  <button
+                    className="flex-1 flex items-center justify-center bg-gray-200 text-gray-600 text-sm px-4 py-2 rounded-md cursor-not-allowed"
+                    disabled
+                  >
+                    <ArrowTopRightOnSquareIcon className="h-4 w-4 mr-2" />
+                    No Demo
                   </button>
                 )}
                 
@@ -249,13 +259,21 @@ const Projects = () => {
                     <ArrowTopRightOnSquareIcon className="h-5 w-5 mr-2" />
                     Live Demo
                   </a>
-                ) : (
+                ) : selectedProject.comingSoon ? (
                   <button
                     className="flex items-center bg-gray-200 text-gray-600 px-4 py-2 rounded-md cursor-not-allowed"
                     disabled
                   >
                     <ArrowTopRightOnSquareIcon className="h-5 w-5 mr-2" />
                     Demo Coming Soon
+                  </button>
+                ) : (
+                  <button
+                    className="flex items-center bg-gray-200 text-gray-600 px-4 py-2 rounded-md cursor-not-allowed"
+                    disabled
+                  >
+                    <ArrowTopRightOnSquareIcon className="h-5 w-5 mr-2" />
+                    No Demo Available
                   </button>
                 )}
                 
