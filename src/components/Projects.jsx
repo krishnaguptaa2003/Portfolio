@@ -7,12 +7,12 @@ const allProjects = [
   {
     id: 1,
     title: "Academex",
-    description: "A comprehensive learning platform featuring interactive courses, progress tracking, and student management system.",
+    description: "A comprehensive learning platform featuring interactive courses, progress tracking, and student management system with Socket.ai Integration.",
     image: "/images/project6.png",
     alt: "Screenshot of Academex Learning Platform",
     liveLink: "https://academe-x.vercel.app/",
-    githubLink: "https://github.com/krishnaguptaa2003/Employee-Calibration-repo",
-    technologies: ["React.js", "Node.js", "MongoDB", "Tailwind CSS", "JWT Authentication"]
+    githubLink: "https://github.com/krishnaguptaa2003/AcademeX",
+    technologies: ["React.js", "Node.js", "PostgreSQL", "Tailwind CSS", "JWT Authentication"]
   },
   {
     id: 2,
