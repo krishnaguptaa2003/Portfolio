@@ -89,10 +89,10 @@ const Hero = () => {
             }}
           >
             <a
-              href="/images/KRISHNA_GUPTA-resume.pdf"
+              href="/images/Resume/Krishna_Gupta_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              download="KRISHNA_GUPTA-resume.pdf"
+              download="Krishna_Gupta_Resume.pdf.pdf"
               aria-label="Download Krishna Gupta's Curriculum Vitae (PDF document)"
               className="relative overflow-hidden group bg-gradient-to-r from-green-500 to-teal-500 text-white font-medium px-6 py-3 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
             >
